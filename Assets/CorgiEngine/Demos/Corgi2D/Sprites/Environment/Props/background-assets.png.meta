@@ -197,18 +197,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -874,37 +862,37 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      background-assets_0: 21300000
-      background-assets_1: 21300002
       background-assets_10: 21300020
-      background-assets_11: 21300022
-      background-assets_12: 21300024
-      background-assets_13: 21300026
-      background-assets_14: 21300028
-      background-assets_15: 21300030
+      background-assets_27: 21300054
       background-assets_16: 21300032
-      background-assets_17: 21300034
+      background-assets_15: 21300030
       background-assets_18: 21300036
-      background-assets_19: 21300038
-      background-assets_2: 21300004
-      background-assets_20: 21300040
-      background-assets_21: 21300042
-      background-assets_22: 21300044
-      background-assets_23: 21300046
       background-assets_24: 21300048
       background-assets_25: 21300050
-      background-assets_26: 21300052
-      background-assets_27: 21300054
-      background-assets_28: 21300056
-      background-assets_29: 21300058
-      background-assets_3: 21300006
-      background-assets_30: 21300060
-      background-assets_4: 21300008
       background-assets_5: 21300010
+      background-assets_21: 21300042
+      background-assets_23: 21300046
+      background-assets_14: 21300028
+      background-assets_17: 21300034
+      background-assets_19: 21300038
       background-assets_6: 21300012
+      background-assets_0: 21300000
+      background-assets_1: 21300002
+      background-assets_13: 21300026
       background-assets_7: 21300014
+      background-assets_28: 21300056
       background-assets_8: 21300016
       background-assets_9: 21300018
+      background-assets_11: 21300022
+      background-assets_22: 21300044
+      background-assets_30: 21300060
+      background-assets_3: 21300006
+      background-assets_26: 21300052
+      background-assets_2: 21300004
+      background-assets_4: 21300008
+      background-assets_20: 21300040
+      background-assets_12: 21300024
+      background-assets_29: 21300058
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -367,15 +367,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      pixel-corgi_0: 21300000
-      pixel-corgi_1: 21300002
-      pixel-corgi_2: 21300004
-      pixel-corgi_3: 21300006
-      pixel-corgi_4: 21300008
-      pixel-corgi_5: 21300010
       pixel-corgi_6: 21300012
+      pixel-corgi_4: 21300008
+      pixel-corgi_0: 21300000
       pixel-corgi_7: 21300014
       pixel-corgi_8: 21300016
+      pixel-corgi_3: 21300006
+      pixel-corgi_1: 21300002
+      pixel-corgi_5: 21300010
+      pixel-corgi_2: 21300004
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

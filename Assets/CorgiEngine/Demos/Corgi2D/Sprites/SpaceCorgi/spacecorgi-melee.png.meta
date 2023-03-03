@@ -161,18 +161,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 4096
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -607,26 +595,26 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      spacecorgi-melee_0: 21300000
-      spacecorgi-melee_1: 21300002
-      spacecorgi-melee_10: 21300020
+      spacecorgi-melee_9: 21300018
       spacecorgi-melee_11: 21300022
-      spacecorgi-melee_12: 21300024
-      spacecorgi-melee_13: 21300026
+      spacecorgi-melee_1: 21300002
+      spacecorgi-melee_4: 21300008
+      spacecorgi-melee_19: 21300038
+      spacecorgi-melee_18: 21300036
       spacecorgi-melee_14: 21300028
       spacecorgi-melee_15: 21300030
+      spacecorgi-melee_5: 21300010
+      spacecorgi-melee_7: 21300014
+      spacecorgi-melee_6: 21300012
+      spacecorgi-melee_3: 21300006
+      spacecorgi-melee_13: 21300026
+      spacecorgi-melee_0: 21300000
+      spacecorgi-melee_12: 21300024
+      spacecorgi-melee_2: 21300004
+      spacecorgi-melee_10: 21300020
+      spacecorgi-melee_8: 21300016
       spacecorgi-melee_16: 21300032
       spacecorgi-melee_17: 21300034
-      spacecorgi-melee_18: 21300036
-      spacecorgi-melee_19: 21300038
-      spacecorgi-melee_2: 21300004
-      spacecorgi-melee_3: 21300006
-      spacecorgi-melee_4: 21300008
-      spacecorgi-melee_5: 21300010
-      spacecorgi-melee_6: 21300012
-      spacecorgi-melee_7: 21300014
-      spacecorgi-melee_8: 21300016
-      spacecorgi-melee_9: 21300018
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

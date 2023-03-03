@@ -47,6 +47,9 @@ TextureImporter:
   - first:
       213: 21300028
     second: GrenadeLauncherIcon
+  - first:
+      213: -8612435658162055378
+    second: HitscanGunIcon
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -387,7 +390,7 @@ TextureImporter:
       name: ChickenIcon
       rect:
         serializedVersion: 2
-        x: 257
+        x: 256
         y: 128
         width: 128
         height: 128
@@ -488,10 +491,31 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: HitscanGunIcon
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 128
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e27d758466b7a7880800000000000000
+      internalID: -8612435658162055378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 9b31cb5d016ef804fb51a18b9f1084b7
     internalID: 0
     vertices: []
     indices: 
@@ -500,20 +524,21 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       BulletsIcon: 21300022
-      ChickenIcon: 21300020
-      CoinIcon: 21300000
-      GrenadeIcon: 21300004
-      GrenadeLauncherIcon: 21300028
-      KeyIcon: 21300012
       MachineGunIcon: 21300002
+      HitscanGunIcon: -8612435658162055378
+      ShotgunIcon: 21300026
+      KeyIcon: 21300012
+      TeddyIcon: 21300018
+      CoinIcon: 21300000
+      RubykeyIcon: 21300014
+      TimeModifierIcon: 21300016
+      GrenadeLauncherIcon: 21300028
+      ChickenIcon: 21300020
+      StimpackIcon: 21300008
+      RocketLauncherIcon: 21300006
       QuestionMarkIcon: 21300010
       RocketIcon: 21300024
-      RocketLauncherIcon: 21300006
-      RubykeyIcon: 21300014
-      ShotgunIcon: 21300026
-      StimpackIcon: 21300008
-      TeddyIcon: 21300018
-      TimeModifierIcon: 21300016
+      GrenadeIcon: 21300004
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

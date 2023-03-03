@@ -191,18 +191,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -847,36 +835,36 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RectangleJetpack_0: 21300000
       RectangleJetpack_1: 21300002
-      RectangleJetpack_10: 21300020
-      RectangleJetpack_11: 21300022
-      RectangleJetpack_12: 21300024
-      RectangleJetpack_13: 21300026
-      RectangleJetpack_14: 21300028
-      RectangleJetpack_15: 21300030
-      RectangleJetpack_16: 21300032
-      RectangleJetpack_17: 21300034
-      RectangleJetpack_18: 21300036
-      RectangleJetpack_19: 21300038
-      RectangleJetpack_2: 21300004
-      RectangleJetpack_20: 21300040
       RectangleJetpack_21: 21300042
-      RectangleJetpack_22: 21300044
-      RectangleJetpack_23: 21300046
-      RectangleJetpack_24: 21300048
-      RectangleJetpack_25: 21300050
+      RectangleJetpack_16: 21300032
       RectangleJetpack_26: 21300052
-      RectangleJetpack_27: 21300054
-      RectangleJetpack_28: 21300056
-      RectangleJetpack_29: 21300058
-      RectangleJetpack_3: 21300006
-      RectangleJetpack_4: 21300008
+      RectangleJetpack_19: 21300038
+      RectangleJetpack_0: 21300000
+      RectangleJetpack_18: 21300036
+      RectangleJetpack_10: 21300020
+      RectangleJetpack_20: 21300040
       RectangleJetpack_5: 21300010
-      RectangleJetpack_6: 21300012
+      RectangleJetpack_4: 21300008
+      RectangleJetpack_24: 21300048
+      RectangleJetpack_3: 21300006
+      RectangleJetpack_27: 21300054
+      RectangleJetpack_2: 21300004
+      RectangleJetpack_12: 21300024
+      RectangleJetpack_23: 21300046
+      RectangleJetpack_13: 21300026
+      RectangleJetpack_28: 21300056
+      RectangleJetpack_9: 21300018
+      RectangleJetpack_22: 21300044
+      RectangleJetpack_15: 21300030
+      RectangleJetpack_11: 21300022
+      RectangleJetpack_14: 21300028
       RectangleJetpack_7: 21300014
       RectangleJetpack_8: 21300016
-      RectangleJetpack_9: 21300018
+      RectangleJetpack_25: 21300050
+      RectangleJetpack_17: 21300034
+      RectangleJetpack_6: 21300012
+      RectangleJetpack_29: 21300058
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -2,40 +2,63 @@
 using UnityEngine.UI;
 using System.Collections;
 using MoreMountains.Tools;
+using UnityEngine.EventSystems;
 
 namespace MoreMountains.CorgiEngine
 {	
 	/// <summary>
 	/// Handles all GUI effects and changes
 	/// </summary>
-	public class GUIManager : Singleton<GUIManager> 
+	public class GUIManager : MMSingleton<GUIManager>, MMEventListener<LevelNameEvent>, MMEventListener<ControlsModeEvent>
 	{
+		[Header("Bindings")]
+
 		/// the game object that contains the heads up display (avatar, health, points...)
+		[Tooltip("the game object that contains the heads up display (avatar, health, points...)")]
 		public GameObject HUD;
 		/// the jetpack bar
-		public ProgressBar[] HealthBars;
+		[Tooltip("the jetpack bar")]
+		public MMProgressBar[] HealthBars;
 		/// the jetpack bar
-		public ProgressBar[] JetPackBars;
+		[Tooltip("the jetpack bar")]
+		public MMProgressBar[] JetPackBars;
 		/// the panels and bars used to display current weapon ammo
+		[Tooltip("the panels and bars used to display current weapon ammo")]
 		public AmmoDisplay[] AmmoDisplays;
 		/// the pause screen game object
-		public GameObject PauseScreen;	
+		[Tooltip("the pause screen game object")]
+		public GameObject PauseScreen;
 		/// the time splash gameobject
+		[Tooltip("the time splash gameobject")]
 		public GameObject TimeSplash;
 		/// The mobile buttons
+		[Tooltip("The mobile buttons")]
 		public CanvasGroup Buttons;
 		/// The mobile arrows
+		[Tooltip("The mobile arrows")]
 		public CanvasGroup Arrows;
 		/// The mobile movement joystick
+		[Tooltip("The mobile movement joystick")]
 		public CanvasGroup Joystick;
 		/// the points counter
+		[Tooltip("the points counter")]
 		public Text PointsText;
 		/// the level display
+		[Tooltip("the level display")]
 		public Text LevelText;
-		/// the screen used for all fades
-		public Image Fader;
+
+		public Image FuelHUD;
+
+		public Image GemHUD;
+
+		[Header("Settings")]
+
+		/// the pattern to apply when displaying the score
+		[Tooltip("the pattern to apply when displaying the score")]
+		public string PointsPattern = "000000";
 
 		protected float _initialJoystickAlpha;
+		protected float _initialArrowsAlpha;
 		protected float _initialButtonsAlpha;
 
 		/// <summary>
@@ -45,55 +68,68 @@ namespace MoreMountains.CorgiEngine
 		{
 			base.Awake();
 
-			if (Joystick!=null)
+			if (Joystick != null)
 			{
-				_initialJoystickAlpha=Joystick.alpha;
+				_initialJoystickAlpha = Joystick.alpha;
 			}
-			if (Buttons!=null)
+			if (Arrows != null)
 			{
-				_initialButtonsAlpha=Buttons.alpha;
+				_initialArrowsAlpha = Arrows.alpha;
+			}
+			if (Buttons != null)
+			{
+				_initialButtonsAlpha = Buttons.alpha;
 			}
 		}
 
-	    /// <summary>
-	    /// Initialization
-	    /// </summary>
-	    protected virtual void Start()
+		/// <summary>
+		/// Initialization
+		/// </summary>
+		protected virtual void Start()
 		{
 			RefreshPoints();
 		}
 
-	    /// <summary>
-	    /// Sets the HUD active or inactive
-	    /// </summary>
-	    /// <param name="state">If set to <c>true</c> turns the HUD active, turns it off otherwise.</param>
-	    public virtual void SetHUDActive(bool state)
-	    {
-	        if (HUD!= null)
-	        { 
-	            HUD.SetActive(state);
-	        }
-	        if (PointsText!= null)
-	        { 
-	            PointsText.enabled = state;
-	        }
-	        if (LevelText!= null)
-	        { 
-	            LevelText.enabled = state;
-	        }
-	    }
+		/// <summary>
+		/// Sets the HUD active or inactive
+		/// </summary>
+		/// <param name="state">If set to <c>true</c> turns the HUD active, turns it off otherwise.</param>
+		public virtual void SetHUDActive(bool state)
+		{
+			if (HUD!= null)
+			{ 
+				HUD.SetActive(state);
+			}
+			if (PointsText!= null)
+			{ 
+				PointsText.enabled = state;
+			}
+			if (LevelText!= null)
+			{ 
+				LevelText.enabled = state;
+			}
 
-	    /// <summary>
-	    /// Sets the avatar active or inactive
-	    /// </summary>
-	    /// <param name="state">If set to <c>true</c> turns the HUD active, turns it off otherwise.</param>
-	    public virtual void SetAvatarActive(bool state)
-	    {
-	        if (HUD != null)
-	        {
-	            HUD.SetActive(state);
-	        }
-	    }
+			if (FuelHUD != null)
+			{
+				FuelHUD.enabled = state;
+			}
+			if (GemHUD != null)
+			{
+				GemHUD.enabled = state;
+			}
+		}
+
+		/// <summary>
+		/// Sets the avatar active or inactive
+		/// </summary>
+		/// <param name="state">If set to <c>true</c> turns the HUD active, turns it off otherwise.</param>
+		public virtual void SetAvatarActive(bool state)
+		{
+			if (HUD != null)
+			{
+				HUD.SetActive(state);
+			}
+		}
 
 		/// <summary>
 		/// Called by the input manager, this method turns controls visible or not depending on what's been chosen
@@ -107,12 +143,12 @@ namespace MoreMountains.CorgiEngine
 				Joystick.gameObject.SetActive(state);
 				if (state && movementControl == InputManager.MovementControls.Joystick)
 				{
-					Joystick.alpha=_initialJoystickAlpha;
+					Joystick.alpha = _initialJoystickAlpha;
 				}
 				else
 				{
-					Joystick.alpha=0;
-					Joystick.gameObject.SetActive (false);
+					Joystick.alpha = 0;
+					Joystick.gameObject.SetActive(false);
 				}
 			}
 
@@ -121,12 +157,12 @@ namespace MoreMountains.CorgiEngine
 				Arrows.gameObject.SetActive(state);
 				if (state && movementControl == InputManager.MovementControls.Arrows)
 				{
-					Arrows.alpha=_initialJoystickAlpha;
+					Arrows.alpha = _initialArrowsAlpha;
 				}
 				else
 				{
-					Arrows.alpha=0;
-					Arrows.gameObject.SetActive (false);
+					Arrows.alpha = 0;
+					Arrows.gameObject.SetActive(false);
 				}
 			}
 
@@ -151,11 +187,12 @@ namespace MoreMountains.CorgiEngine
 		/// <param name="state">If set to <c>true</c>, sets the pause.</param>
 		public virtual void SetPause(bool state)
 		{
-	        if (PauseScreen!= null)
-	        { 
-	    		PauseScreen.SetActive(state);
-	        }
-	    }
+			if (PauseScreen!= null)
+			{ 
+				PauseScreen.SetActive(state);
+				EventSystem.current.sendNavigationEvents = state;
+			}
+		}
 
 		/// <summary>
 		/// Sets the jetpackbar active or not.
@@ -168,24 +205,24 @@ namespace MoreMountains.CorgiEngine
 				return;
 			}
 
-			foreach (ProgressBar jetpackBar in JetPackBars)
+			foreach (MMProgressBar jetpackBar in JetPackBars)
 			{
 				if (jetpackBar != null)
-		        { 
-		        	if (jetpackBar.PlayerID == playerID)
-		        	{
+				{ 
+					if (jetpackBar.PlayerID == playerID)
+					{
 						jetpackBar.gameObject.SetActive(state);
-		        	}					
-		        }
+					}					
+				}
 			}	        
-	    }
+		}
 
 		/// <summary>
 		/// Sets the ammo displays active or not
 		/// </summary>
 		/// <param name="state">If set to <c>true</c> state.</param>
 		/// <param name="playerID">Player I.</param>
-		public virtual void SetAmmoDisplays(bool state, string playerID)
+		public virtual void SetAmmoDisplays(bool state, string playerID, int ammoDisplayID)
 		{
 			if (AmmoDisplays == null)
 			{
@@ -196,7 +233,7 @@ namespace MoreMountains.CorgiEngine
 			{
 				if (ammoDisplay != null)
 				{ 
-					if (ammoDisplay.PlayerID == playerID)
+					if ((ammoDisplay.PlayerID == playerID) && (ammoDisplay.AmmoDisplayID == ammoDisplayID))
 					{
 						ammoDisplay.gameObject.SetActive(state);
 					}					
@@ -210,10 +247,10 @@ namespace MoreMountains.CorgiEngine
 		/// <param name="state">If set to <c>true</c>, turns the timesplash on.</param>
 		public virtual void SetTimeSplash(bool state)
 		{
-	        if (TimeSplash != null)
-	        {
-	            TimeSplash.SetActive(state);
-	        }
+			if (TimeSplash != null)
+			{
+				TimeSplash.SetActive(state);
+			}
 		}
 		
 		/// <summary>
@@ -221,42 +258,42 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public virtual void RefreshPoints()
 		{
-	        if (PointsText!= null)
-	        { 
-	    		PointsText.text = GameManager.Instance.Points.ToString("000000");
-	        }
-	    }
+			if (PointsText!= null)
+			{ 
+				PointsText.text = GameManager.Instance.Points.ToString(PointsPattern);
+			}
+		}
 
-	    /// <summary>
-	    /// Updates the health bar.
-	    /// </summary>
-	    /// <param name="currentHealth">Current health.</param>
-	    /// <param name="minHealth">Minimum health.</param>
-	    /// <param name="maxHealth">Max health.</param>
-	    /// <param name="playerID">Player I.</param>
-	    public virtual void UpdateHealthBar(float currentHealth,float minHealth,float maxHealth,string playerID)
-	    {
+		/// <summary>
+		/// Updates the health bar.
+		/// </summary>
+		/// <param name="currentHealth">Current health.</param>
+		/// <param name="minHealth">Minimum health.</param>
+		/// <param name="maxHealth">Max health.</param>
+		/// <param name="playerID">Player I.</param>
+		public virtual void UpdateHealthBar(float currentHealth,float minHealth,float maxHealth,string playerID)
+		{
 			if (HealthBars == null) { return; }
 			if (HealthBars.Length <= 0)	{ return; }
 
-	    	foreach (ProgressBar healthBar in HealthBars)
-	    	{
+			foreach (MMProgressBar healthBar in HealthBars)
+			{
 				if (healthBar == null) { continue; }
 				if (healthBar.PlayerID == playerID)
 				{
 					healthBar.UpdateBar(currentHealth,minHealth,maxHealth);
 				}
-	    	}
+			}
 
-	    }
+		}
 
-	    /// <summary>
-	    /// Updates the jetpack bar.
-	    /// </summary>
-	    /// <param name="currentFuel">Current fuel.</param>
-	    /// <param name="minFuel">Minimum fuel.</param>
-	    /// <param name="maxFuel">Max fuel.</param>
-	    /// <param name="playerID">Player I.</param>
+		/// <summary>
+		/// Updates the jetpack bar.
+		/// </summary>
+		/// <param name="currentFuel">Current fuel.</param>
+		/// <param name="minFuel">Minimum fuel.</param>
+		/// <param name="maxFuel">Max fuel.</param>
+		/// <param name="playerID">Player I.</param>
 		public virtual void UpdateJetpackBar(float currentFuel, float minFuel, float maxFuel,string playerID)
 		{
 			if (JetPackBars == null)
@@ -264,15 +301,15 @@ namespace MoreMountains.CorgiEngine
 				return;
 			}
 
-			foreach (ProgressBar jetpackBar in JetPackBars)
-	    	{
+			foreach (MMProgressBar jetpackBar in JetPackBars)
+			{
 				if (jetpackBar == null) { return; }
 				if (jetpackBar.PlayerID == playerID)
 				{
-					jetpackBar.UpdateBar(currentFuel,minFuel,maxFuel);	
-		    	}    
+					jetpackBar.SetBar(currentFuel,minFuel,maxFuel);
+				}    
 			}
-	    }
+		}
 
 		/// <summary>
 		/// Updates the (optional) ammo displays.
@@ -284,7 +321,7 @@ namespace MoreMountains.CorgiEngine
 		/// <param name="magazineSize">Magazine size.</param>
 		/// <param name="playerID">Player I.</param>
 		/// <param name="displayTotal">If set to <c>true</c> display total.</param>
-		public virtual void UpdateAmmoDisplays(bool magazineBased, int totalAmmo, int maxAmmo, int ammoInMagazine, int magazineSize, string playerID, bool displayTotal)
+		public virtual void UpdateAmmoDisplays(bool magazineBased, int totalAmmo, int maxAmmo, int ammoInMagazine, int magazineSize, string playerID, int ammoDisplayID, bool displayTotal)
 		{
 			if (AmmoDisplays == null)
 			{
@@ -294,7 +331,7 @@ namespace MoreMountains.CorgiEngine
 			foreach (AmmoDisplay ammoDisplay in AmmoDisplays)
 			{
 				if (ammoDisplay == null) { return; }
-				if (ammoDisplay.PlayerID == playerID)
+				if ((ammoDisplay.PlayerID == playerID) && (ammoDisplay.AmmoDisplayID == ammoDisplayID))
 				{
 					ammoDisplay.UpdateAmmoDisplays (magazineBased, totalAmmo, maxAmmo, ammoInMagazine, magazineSize, displayTotal);
 				}    
@@ -306,28 +343,42 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public virtual void SetLevelName(string name)
 		{
-	        if (LevelText!= null)
-	        { 
-	    		LevelText.text=name;
-	        }
-	    }
-		
-		/// <summary>
-		/// Fades the fader in or out depending on the state
-		/// </summary>
-		/// <param name="state">If set to <c>true</c> fades the fader in, otherwise out if <c>false</c>.</param>
-		public virtual void FaderOn(bool state,float duration)
-		{
-	        if (Fader!= null)
-	        { 
-			    Fader.gameObject.SetActive(true);
-			    if (state)
-				    StartCoroutine(MMFade.FadeImage(Fader,duration, new Color(0,0,0,1f)));
-			    else
-				    StartCoroutine(MMFade.FadeImage(Fader,duration,new Color(0,0,0,0f)));
-	        }
-	    }
-		
+			if (LevelText!= null)
+			{ 
+				LevelText.text=name;
+			}
+		}
 
+		/// <summary>
+		/// When we catch a level name event, we change our level's name in the GUI
+		/// </summary>
+		/// <param name="levelNameEvent"></param>
+		public virtual void OnMMEvent(LevelNameEvent levelNameEvent)
+		{
+			SetLevelName(levelNameEvent.LevelName);
+		}
+
+		public virtual void OnMMEvent(ControlsModeEvent controlsModeEvent)
+		{
+			SetMobileControlsActive(controlsModeEvent.Status, controlsModeEvent.MovementControl);
+		}
+
+		/// <summary>
+		/// On enable, we start listening to events
+		/// </summary>
+		protected virtual void OnEnable()
+		{
+			this.MMEventStartListening<LevelNameEvent>();
+			this.MMEventStartListening<ControlsModeEvent>();
+		}
+
+		/// <summary>
+		/// On disable, we stop listening to events
+		/// </summary>
+		protected virtual void OnDisable()
+		{
+			this.MMEventStopListening<LevelNameEvent>();
+			this.MMEventStopListening<ControlsModeEvent>();
+		}
 	}
 }

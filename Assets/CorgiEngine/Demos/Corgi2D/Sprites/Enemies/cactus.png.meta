@@ -221,18 +221,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 4096
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -1087,46 +1075,46 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      cactus_0: 21300000
-      cactus_1: 21300002
-      cactus_10: 21300020
-      cactus_11: 21300022
-      cactus_12: 21300024
-      cactus_13: 21300026
-      cactus_14: 21300028
-      cactus_15: 21300030
-      cactus_16: 21300032
-      cactus_17: 21300034
-      cactus_18: 21300036
-      cactus_19: 21300038
+      cactus_8: 21300016
       cactus_2: 21300004
-      cactus_20: 21300040
-      cactus_21: 21300042
-      cactus_22: 21300044
-      cactus_23: 21300046
-      cactus_24: 21300048
-      cactus_25: 21300050
-      cactus_26: 21300052
+      cactus_9: 21300018
+      cactus_11: 21300022
       cactus_27: 21300054
       cactus_28: 21300056
-      cactus_29: 21300058
+      cactus_7: 21300014
+      cactus_5: 21300010
+      cactus_0: 21300000
+      cactus_15: 21300030
       cactus_3: 21300006
+      cactus_38: 21300076
+      cactus_6: 21300012
+      cactus_18: 21300036
+      cactus_13: 21300026
+      cactus_24: 21300048
       cactus_30: 21300060
-      cactus_31: 21300062
-      cactus_32: 21300064
+      cactus_26: 21300052
+      cactus_29: 21300058
+      cactus_23: 21300046
       cactus_33: 21300066
       cactus_34: 21300068
-      cactus_35: 21300070
-      cactus_36: 21300072
-      cactus_37: 21300074
-      cactus_38: 21300076
-      cactus_39: 21300078
+      cactus_31: 21300062
+      cactus_32: 21300064
       cactus_4: 21300008
-      cactus_5: 21300010
-      cactus_6: 21300012
-      cactus_7: 21300014
-      cactus_8: 21300016
-      cactus_9: 21300018
+      cactus_39: 21300078
+      cactus_19: 21300038
+      cactus_12: 21300024
+      cactus_1: 21300002
+      cactus_22: 21300044
+      cactus_16: 21300032
+      cactus_20: 21300040
+      cactus_17: 21300034
+      cactus_10: 21300020
+      cactus_21: 21300042
+      cactus_25: 21300050
+      cactus_14: 21300028
+      cactus_35: 21300070
+      cactus_37: 21300074
+      cactus_36: 21300072
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

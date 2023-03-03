@@ -116,18 +116,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -248,10 +236,10 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       super-hipster-bros_0: 21300000
-      super-hipster-bros_1: 21300002
       super-hipster-bros_2: 21300004
       super-hipster-bros_3: 21300006
       super-hipster-bros_4: 21300008
+      super-hipster-bros_1: 21300002
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

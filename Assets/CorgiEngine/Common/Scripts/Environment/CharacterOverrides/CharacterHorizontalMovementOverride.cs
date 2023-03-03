@@ -7,21 +7,22 @@ namespace MoreMountains.CorgiEngine
 	/// <summary>
 	/// Add this component to a trigger zone, and it'll override the CharacterHorizontalMovement settings for all characters that cross it 
 	/// </summary>
-	public class CharacterHorizontalMovementOverride : MonoBehaviour 
+	public class CharacterHorizontalMovementOverride : CorgiMonoBehaviour 
 	{
 		/// basic movement speed
+		[Tooltip("basic movement speed")]
 		public float MovementSpeed = 8f;
 
 		protected float _previousMovementSpeed;
 
 		/// <summary>
-	    /// Triggered when something collides with the override zone
-	    /// </summary>
+		/// Triggered when something collides with the override zone
+		/// </summary>
 		/// <param name="collider">Something colliding with the override zone.</param>
-	    protected virtual void OnTriggerEnter2D(Collider2D collider)
+		protected virtual void OnTriggerEnter2D(Collider2D collider)
 		{
 			// we check that the object colliding with the override zone is actually a characterJump
-			CharacterHorizontalMovement characterHorizontalMovement = collider.GetComponent<CharacterHorizontalMovement>();
+			CharacterHorizontalMovement characterHorizontalMovement = collider.GetComponent<Character>()?.FindAbility<CharacterHorizontalMovement>();
 			if (characterHorizontalMovement==null)
 			{
 				return;	
@@ -30,14 +31,14 @@ namespace MoreMountains.CorgiEngine
 			characterHorizontalMovement.MovementSpeed = MovementSpeed;	
 		}
 
-	    /// <summary>
-	    /// Triggered when something exits the water
-	    /// </summary>
-	    /// <param name="collider">Something colliding with the water.</param>
-	    protected virtual void OnTriggerExit2D(Collider2D collider)
+		/// <summary>
+		/// Triggered when something exits the water
+		/// </summary>
+		/// <param name="collider">Something colliding with the water.</param>
+		protected virtual void OnTriggerExit2D(Collider2D collider)
 		{
 			// we check that the object colliding with the water is actually a characterJump
-			CharacterHorizontalMovement characterHorizontalMovement = collider.GetComponent<CharacterHorizontalMovement>();
+			CharacterHorizontalMovement characterHorizontalMovement = collider.GetComponent<Character>()?.FindAbility<CharacterHorizontalMovement>();
 			if (characterHorizontalMovement==null)
 			{
 				return;	
@@ -47,4 +48,3 @@ namespace MoreMountains.CorgiEngine
 		
 	}
 }
-

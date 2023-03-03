@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MoreMountains.Tools;
+using System;
 
 namespace MoreMountains.CorgiEngine
 {	
@@ -9,17 +10,21 @@ namespace MoreMountains.CorgiEngine
 	/// <summary>
 	/// A controller for the level map's main character
 	/// </summary>
-	public class LevelMapCharacter : MonoBehaviour//, MMEventListener<MMStateChangeEvent<>>
+	public class LevelMapCharacter : CorgiMonoBehaviour//, MMEventListener<MMStateChangeEvent<>>
 	{
 		/// the player ID (for input manager)
+		[Tooltip("the player ID (for input manager)")]
 		public string PlayerID = "Player1";
 		/// the character's movement speed
+		[Tooltip("the character's movement speed")]
 		public float CharacterSpeed;
 		/// the point on the map at which the character should spawn
+		[Tooltip("the point on the map at which the character should spawn")]
 		public LevelMapPathElement StartingPoint;
 		/// true if the character colliding with a path element at this frame
 		public bool CollidingWithAPathElement { get; set; }
 		/// true if the character is currently facing right
+		[Tooltip("true if the character is currently facing right")]
 		public bool CharacterIsFacingRight=true;
 		/// the last visited path element
 		public LevelMapPathElement LastVisitedPathElement { get; set; }
@@ -81,7 +86,7 @@ namespace MoreMountains.CorgiEngine
 		public virtual void InputMovement()
 		{
 			// we get both direction axis
-			if (InputManager.Instance!=null)
+			if (InputManager.HasInstance)
 			{
 				_horizontalMove = InputManager.Instance.PrimaryMovement.x;
 				_verticalMove = InputManager.Instance.PrimaryMovement.y;
@@ -97,7 +102,7 @@ namespace MoreMountains.CorgiEngine
 				ButtonPressed();
 			}
 
-			_movement="";
+			_movement = "";
 			// if one or both axis values is above a small value
 			if ( (Mathf.Abs(_horizontalMove)>_threshold) || (Mathf.Abs(_verticalMove)>_threshold) )
 			{
@@ -112,7 +117,7 @@ namespace MoreMountains.CorgiEngine
 			}
 
 			// if we haven't registered any input, we do nothing and exit
-			if (_movement==""){return;}
+			if (String.IsNullOrWhiteSpace(_movement)){return;}
 
 			// if the path element we're on right now is automated, we do nothing and exit
 			if (_currentPathElement.AutomaticMovement) { return; }
@@ -182,7 +187,7 @@ namespace MoreMountains.CorgiEngine
 					_currentSpeed=0f;
 				}
 				// we pass that parameter to our animator
-				MMAnimator.UpdateAnimatorFloat(_animator,"Speed",_currentSpeed);
+				_animator.SetFloat("Speed", _currentSpeed);
 			}
 
 			_positionLastFrame=transform.position;
@@ -260,27 +265,5 @@ namespace MoreMountains.CorgiEngine
 		{
 			_verticalMove = value;
 		}
-
-		/*/// <summary>
-		/// When the character gets enabled, we start listening for events
-		/// </summary>
-		protected virtual void OnEnable()
-		{
-			
-
-			MMEventManager.StartListening("Jump",ButtonPressed);
-			MMEventManager.StartListeningFloatEvent("HorizontalMovement",SetHorizontalMove);
-			MMEventManager.StartListeningFloatEvent("VerticalMovement",SetVerticalMove);
-		}
-
-		/// <summary>
-		/// When the character gets disabled, we stop listening for events
-		/// </summary>
-		protected virtual void OnDisable()
-		{
-			MMEventManager.StopListening("Jump",ButtonPressed);
-			MMEventManager.StopListeningFloatEvent("HorizontalMovement",SetHorizontalMove);
-			MMEventManager.StopListeningFloatEvent("VerticalMovement",SetVerticalMove);
-		}	*/
 	}
 }

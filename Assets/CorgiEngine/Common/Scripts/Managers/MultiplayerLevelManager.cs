@@ -58,13 +58,13 @@ namespace MoreMountains.CorgiEngine
 			// we wait for 2 seconds
 			yield return new WaitForSeconds (2f);
 			// we reload the current scene to start a new game
-			LoadingSceneManager.LoadScene(SceneManager.GetActiveScene ().name);
+			MMSceneLoadingManager.LoadScene(SceneManager.GetActiveScene ().name);
 		}
 
 		/// <summary>
 		/// Kills the specified player 
 		/// </summary>
-		public override void KillPlayer(Character player)
+		public override void PlayerDead(Character player)
 		{
 			Health characterHealth = player.GetComponent<Health>();
 			if (characterHealth == null)
@@ -74,8 +74,6 @@ namespace MoreMountains.CorgiEngine
 			else
 			{
 				// we kill the character
-				characterHealth.Kill ();
-
 				StartCoroutine (RemovePlayer (player));
 			}
 

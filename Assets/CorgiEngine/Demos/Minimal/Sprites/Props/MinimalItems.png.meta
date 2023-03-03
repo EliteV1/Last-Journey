@@ -523,22 +523,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      ItemBullets: 21300014
-      ItemCoins: 21300026
-      ItemGrenade: 21300030
-      ItemGrenadeLauncher: 21300020
-      ItemGrenades: 21300028
-      ItemMachineGun: 21300010
-      ItemRocketLauncher: 21300012
-      ItemRockets: 21300016
-      ItemShotgun: 21300018
-      ItemStimpack: 21300024
-      ItemTimeModifier: 21300022
       MinimalGrenadeLauncher: 21300006
-      MinimalMachineGun: 21300000
-      MinimalRocket: 21300008
       MinimalRocketLauncher: 21300004
+      ItemGrenades: 21300028
+      ItemGrenade: 21300030
+      ItemTimeModifier: 21300022
+      ItemRockets: 21300016
+      MinimalMachineGun: 21300000
+      ItemStimpack: 21300024
+      ItemCoins: 21300026
       MinimalShotgun: 21300002
+      MinimalRocket: 21300008
+      ItemRocketLauncher: 21300012
+      ItemBullets: 21300014
+      ItemMachineGun: 21300010
+      ItemShotgun: 21300018
+      ItemGrenadeLauncher: 21300020
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

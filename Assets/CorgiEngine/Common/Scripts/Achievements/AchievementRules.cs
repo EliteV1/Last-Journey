@@ -10,12 +10,12 @@ namespace MoreMountains.CorgiEngine
 	/// It listens for different event types
 	/// </summary>
 	public class AchievementRules : MMAchievementRules, 
-									MMEventListener<MMGameEvent>, 
-									MMEventListener<MMCharacterEvent>, 
-									MMEventListener<CorgiEngineEvent>,
-									MMEventListener<MMStateChangeEvent<CharacterStates.MovementStates>>,
-									MMEventListener<MMStateChangeEvent<CharacterStates.CharacterConditions>>,
-									MMEventListener<PickableItemEvent>
+		MMEventListener<MMGameEvent>, 
+		MMEventListener<MMCharacterEvent>, 
+		MMEventListener<CorgiEngineEvent>,
+		MMEventListener<MMStateChangeEvent<CharacterStates.MovementStates>>,
+		MMEventListener<MMStateChangeEvent<CharacterStates.CharacterConditions>>,
+		MMEventListener<PickableItemEvent>
 	{
 		/// <summary>
 		/// When we catch an MMGameEvent, we do stuff based on its name

@@ -1,45 +1,73 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MoreMountains.Tools;
+using MoreMountains.Feedbacks;
 
 namespace MoreMountains.CorgiEngine
-{	
-	[AddComponentMenu("Corgi Engine/Weapons/Bomb")] 
+{
 	/// <summary>
-	/// A basic melee weapon class, that will activate a "hurt zone" when the weapon is used
+	/// A class used to trigger a damage area zone of the selected shape (rectangle or circle) after the defined time before explosion.
+	/// Typically used for grenades.
 	/// </summary>
-	public class Bomb : MonoBehaviour 
+	[AddComponentMenu("Corgi Engine/Weapons/Bomb")]
+	public class Bomb : CorgiMonoBehaviour 
 	{
+		/// the possible types of shapes for damage areas
 		public enum DamageAreaShapes { Rectangle, Circle }
 
+		[Header("Bindings")] 
+		/// the renderer this script will pilot - if left empty, will try to grab this component on itself
+		[Tooltip("the renderer this script will pilot - if left empty, will try to grab this component on itself")]
+		public Renderer TargetRenderer; 
+		/// the poolable object component this script will pilot - if left empty, will try to grab this component on itself
+		[Tooltip("the poolable object component this script will pilot - if left empty, will try to grab this component on itself")]
+		public MMPoolableObject TargetPoolableObject;
+
 		[Header("Explosion")]
+
+		/// the duration(in seconds) before the explosion
+		[Tooltip("the duration(in seconds) before the explosion")]
 		public float TimeBeforeExplosion = 2f;
-		public GameObject ExplosionEffect;
-		public AudioClip ExplosionSfx;
+		/// the MMFeedbacks to trigger on explosion
+		[Tooltip("the MMFeedbacks to trigger on explosion")]
+		public MMFeedbacks ExplosionFeedback;
 
 		[Header("Flicker")]
+
+		/// whether or not the sprite attached to this bomb should flicker before exploding
+		[Tooltip("whether or not the sprite attached to this bomb should flicker before exploding")]
 		public bool FlickerSprite = true;
+		/// the time (in seconds) before the flicker
+		[Tooltip("the time (in seconds) before the flicker")]
 		public float TimeBeforeFlicker = 1f;
 
 		[Header("Damage Area")]
+
+		/// the collider that defines the damage area
+		[Tooltip("the collider that defines the damage area")]
 		public Collider2D DamageAreaCollider;
+		/// the duration (in seconds) during which the damage area should be active
+		[Tooltip("the duration (in seconds) during which the damage area should be active")]
 		public float DamageAreaActiveDuration = 1f;
 
 		protected float _timeSinceStart;
-		protected Renderer _renderer;
-		protected PoolableObject _poolableObject;
-
 		protected bool _flickering;
 		protected bool _damageAreaActive;
-
 		protected Color _initialColor;
-		protected Color _flickerColor = new Color32(255, 20, 20, 255); 
+		protected Color _flickerColor = new Color32(255, 20, 20, 255);
+		protected bool _rendererIsNotNull;
 
+		/// <summary>
+		/// On enable we initialize our bomb
+		/// </summary>
 		protected virtual void OnEnable()
 		{
 			Initialization ();
 		}
 
+		/// <summary>
+		/// Grabs renderer and pool components
+		/// </summary>
 		protected virtual void Initialization()
 		{
 			if (DamageAreaCollider == null)
@@ -50,19 +78,29 @@ namespace MoreMountains.CorgiEngine
 			DamageAreaCollider.isTrigger = true;
 			DisableDamageArea ();
 
-			_renderer = gameObject.GetComponentNoAlloc<Renderer> ();
-			if (_renderer != null)
+			if (TargetRenderer == null)
 			{
-				if (_renderer.material.HasProperty("_Color"))
+				TargetRenderer = gameObject.MMGetComponentNoAlloc<Renderer> ();	
+			}
+			
+			_rendererIsNotNull = TargetRenderer != null;
+			
+			if (_rendererIsNotNull)
+			{
+				if (TargetRenderer.material.HasProperty("_Color"))
 				{
-					_initialColor = _renderer.material.color;
+					_initialColor = TargetRenderer.material.color;
 				}
 			}
 
-			_poolableObject = gameObject.GetComponentNoAlloc<PoolableObject> ();
-			if (_poolableObject != null)
+			if (TargetPoolableObject == null)
 			{
-				_poolableObject.LifeTime = 0;
+				TargetPoolableObject = gameObject.MMGetComponentNoAlloc<MMPoolableObject> ();	
+			}
+			
+			if (TargetPoolableObject != null)
+			{
+				TargetPoolableObject.LifeTime = 0;
 			}
 
 			_timeSinceStart = 0;
@@ -70,6 +108,9 @@ namespace MoreMountains.CorgiEngine
 			_damageAreaActive = false;
 		}
 
+		/// <summary>
+		/// On Update we handle our cooldowns and activate the bomb if needed
+		/// </summary>
 		protected virtual void Update()
 		{
 			_timeSinceStart += Time.deltaTime;
@@ -79,9 +120,9 @@ namespace MoreMountains.CorgiEngine
 				if (!_flickering && FlickerSprite)
 				{
 					// We make the bomb's sprite flicker
-					if (_renderer != null)
+					if (TargetRenderer != null)
 					{
-						StartCoroutine(MMImage.Flicker(_renderer,_initialColor,_flickerColor,0.05f,(TimeBeforeExplosion - TimeBeforeFlicker)));	
+						StartCoroutine(MMImage.Flicker(TargetRenderer,_initialColor,_flickerColor,0.05f,(TimeBeforeExplosion - TimeBeforeFlicker)));	
 					}
 				}
 			}
@@ -90,49 +131,40 @@ namespace MoreMountains.CorgiEngine
 			if (_timeSinceStart >= TimeBeforeExplosion && !_damageAreaActive)
 			{
 				EnableDamageArea ();
-				_renderer.enabled = false;
-				InstantiateExplosionEffect ();
-				PlayExplosionSound ();
+				if (_rendererIsNotNull)
+				{
+					TargetRenderer.enabled = false;	
+				}
+				ExplosionFeedback?.PlayFeedbacks();
 				_damageAreaActive = true;
 			}
 
 			if (_timeSinceStart >= TimeBeforeExplosion + DamageAreaActiveDuration)
 			{
-				Destroy ();
+				DestroyBomb ();
 			}
 		}
 
-		protected virtual void Destroy()
+		/// <summary>
+		/// On destroy we disable our object and handle pools
+		/// </summary>
+		protected virtual void DestroyBomb()
 		{
-			_renderer.enabled = true;
-			_renderer.material.color = _initialColor;
-			if (_poolableObject != null)
+			if (_rendererIsNotNull)
 			{
-				_poolableObject.Destroy ();	
+				TargetRenderer.enabled = true;
+				TargetRenderer.material.color = _initialColor;	
+			}
+			
+			if (TargetPoolableObject != null)
+			{
+				TargetPoolableObject.Destroy ();	
 			}
 			else
 			{
-				Destroy ();
+				Destroy(this.gameObject);
 			}
 
-		}
-
-		protected virtual void InstantiateExplosionEffect()
-		{
-			// instantiates the destroy effect
-			if (ExplosionEffect!=null)
-			{
-				GameObject instantiatedEffect=(GameObject)Instantiate(ExplosionEffect,transform.position,transform.rotation);
-				instantiatedEffect.transform.localScale = transform.localScale;
-			}
-		}
-
-		protected virtual void PlayExplosionSound()
-		{
-			if (ExplosionSfx!=null)
-			{
-				SoundManager.Instance.PlaySound(ExplosionSfx,transform.position);
-			}
 		}
 
 		/// <summary>

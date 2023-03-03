@@ -158,18 +158,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -583,25 +571,25 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RectangleRun_0: 21300000
-      RectangleRun_1: 21300002
-      RectangleRun_10: 21300020
-      RectangleRun_11: 21300022
-      RectangleRun_12: 21300024
-      RectangleRun_13: 21300026
-      RectangleRun_14: 21300028
-      RectangleRun_15: 21300030
       RectangleRun_16: 21300032
-      RectangleRun_17: 21300034
-      RectangleRun_18: 21300036
-      RectangleRun_2: 21300004
-      RectangleRun_3: 21300006
-      RectangleRun_4: 21300008
-      RectangleRun_5: 21300010
-      RectangleRun_6: 21300012
       RectangleRun_7: 21300014
+      RectangleRun_6: 21300012
+      RectangleRun_1: 21300002
       RectangleRun_8: 21300016
+      RectangleRun_11: 21300022
+      RectangleRun_18: 21300036
+      RectangleRun_13: 21300026
+      RectangleRun_4: 21300008
+      RectangleRun_14: 21300028
+      RectangleRun_5: 21300010
       RectangleRun_9: 21300018
+      RectangleRun_2: 21300004
+      RectangleRun_17: 21300034
+      RectangleRun_10: 21300020
+      RectangleRun_3: 21300006
+      RectangleRun_12: 21300024
+      RectangleRun_0: 21300000
+      RectangleRun_15: 21300030
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

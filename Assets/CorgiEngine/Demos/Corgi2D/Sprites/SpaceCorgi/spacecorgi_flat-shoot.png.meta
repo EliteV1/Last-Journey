@@ -176,18 +176,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 4096
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -727,31 +715,31 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      spacecorgi_flat-shoot_0: 21300000
-      spacecorgi_flat-shoot_1: 21300002
-      spacecorgi_flat-shoot_10: 21300020
-      spacecorgi_flat-shoot_11: 21300022
-      spacecorgi_flat-shoot_12: 21300024
-      spacecorgi_flat-shoot_13: 21300026
-      spacecorgi_flat-shoot_14: 21300028
-      spacecorgi_flat-shoot_15: 21300030
-      spacecorgi_flat-shoot_16: 21300032
-      spacecorgi_flat-shoot_17: 21300034
-      spacecorgi_flat-shoot_18: 21300036
-      spacecorgi_flat-shoot_19: 21300038
-      spacecorgi_flat-shoot_2: 21300004
-      spacecorgi_flat-shoot_20: 21300040
-      spacecorgi_flat-shoot_21: 21300042
-      spacecorgi_flat-shoot_22: 21300044
-      spacecorgi_flat-shoot_23: 21300046
-      spacecorgi_flat-shoot_24: 21300048
       spacecorgi_flat-shoot_3: 21300006
       spacecorgi_flat-shoot_4: 21300008
-      spacecorgi_flat-shoot_5: 21300010
-      spacecorgi_flat-shoot_6: 21300012
-      spacecorgi_flat-shoot_7: 21300014
+      spacecorgi_flat-shoot_18: 21300036
+      spacecorgi_flat-shoot_24: 21300048
+      spacecorgi_flat-shoot_11: 21300022
+      spacecorgi_flat-shoot_0: 21300000
+      spacecorgi_flat-shoot_14: 21300028
       spacecorgi_flat-shoot_8: 21300016
+      spacecorgi_flat-shoot_15: 21300030
+      spacecorgi_flat-shoot_2: 21300004
+      spacecorgi_flat-shoot_13: 21300026
+      spacecorgi_flat-shoot_17: 21300034
+      spacecorgi_flat-shoot_19: 21300038
+      spacecorgi_flat-shoot_20: 21300040
+      spacecorgi_flat-shoot_10: 21300020
+      spacecorgi_flat-shoot_6: 21300012
+      spacecorgi_flat-shoot_12: 21300024
+      spacecorgi_flat-shoot_22: 21300044
+      spacecorgi_flat-shoot_21: 21300042
+      spacecorgi_flat-shoot_7: 21300014
       spacecorgi_flat-shoot_9: 21300018
+      spacecorgi_flat-shoot_16: 21300032
+      spacecorgi_flat-shoot_1: 21300002
+      spacecorgi_flat-shoot_5: 21300010
+      spacecorgi_flat-shoot_23: 21300046
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

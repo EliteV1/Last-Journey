@@ -11,9 +11,12 @@ namespace MoreMountains.CorgiEngine
 	public class MultiplayerGUIManager : GUIManager 
 	{
 		[Header("Multiplayer Endgame")]
+
 		/// the game over splash screen object
+		[Tooltip("the game over splash screen object")]
 		public GameObject MPEndGameSplash;
 		/// the game over text object
+		[Tooltip("the game over text object")]
 		public Text MPEndGameText;
 
 		/// <summary>

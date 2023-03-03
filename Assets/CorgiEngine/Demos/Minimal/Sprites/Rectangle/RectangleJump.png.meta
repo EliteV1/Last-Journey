@@ -191,18 +191,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -847,36 +835,36 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RectangleJump_0: 21300000
-      RectangleJump_1: 21300002
-      RectangleJump_10: 21300020
-      RectangleJump_11: 21300022
-      RectangleJump_12: 21300024
-      RectangleJump_13: 21300026
-      RectangleJump_14: 21300028
-      RectangleJump_15: 21300030
       RectangleJump_16: 21300032
-      RectangleJump_17: 21300034
-      RectangleJump_18: 21300036
-      RectangleJump_19: 21300038
-      RectangleJump_2: 21300004
-      RectangleJump_20: 21300040
-      RectangleJump_21: 21300042
-      RectangleJump_22: 21300044
-      RectangleJump_23: 21300046
-      RectangleJump_24: 21300048
-      RectangleJump_25: 21300050
-      RectangleJump_26: 21300052
-      RectangleJump_27: 21300054
-      RectangleJump_28: 21300056
-      RectangleJump_29: 21300058
       RectangleJump_3: 21300006
-      RectangleJump_4: 21300008
+      RectangleJump_28: 21300056
+      RectangleJump_0: 21300000
+      RectangleJump_26: 21300052
+      RectangleJump_25: 21300050
+      RectangleJump_11: 21300022
+      RectangleJump_27: 21300054
+      RectangleJump_22: 21300044
+      RectangleJump_14: 21300028
+      RectangleJump_19: 21300038
       RectangleJump_5: 21300010
-      RectangleJump_6: 21300012
       RectangleJump_7: 21300014
-      RectangleJump_8: 21300016
+      RectangleJump_20: 21300040
+      RectangleJump_18: 21300036
+      RectangleJump_4: 21300008
+      RectangleJump_23: 21300046
+      RectangleJump_6: 21300012
+      RectangleJump_29: 21300058
+      RectangleJump_13: 21300026
+      RectangleJump_15: 21300030
       RectangleJump_9: 21300018
+      RectangleJump_12: 21300024
+      RectangleJump_24: 21300048
+      RectangleJump_17: 21300034
+      RectangleJump_10: 21300020
+      RectangleJump_21: 21300042
+      RectangleJump_2: 21300004
+      RectangleJump_1: 21300002
+      RectangleJump_8: 21300016
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

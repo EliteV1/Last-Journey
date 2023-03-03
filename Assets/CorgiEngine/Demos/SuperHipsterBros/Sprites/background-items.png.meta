@@ -392,14 +392,14 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       background-items_0: 21300000
-      background-items_1: 21300002
-      background-items_2: 21300004
       background-items_3: 21300006
-      background-items_4: 21300008
-      background-items_5: 21300010
       background-items_6: 21300012
+      background-items_4: 21300008
       background-items_7: 21300014
+      background-items_1: 21300002
       background-items_8: 21300016
+      background-items_2: 21300004
+      background-items_5: 21300010
       background-items_9: 21300018
   spritePackingTag: 
   pSDRemoveMatte: 0

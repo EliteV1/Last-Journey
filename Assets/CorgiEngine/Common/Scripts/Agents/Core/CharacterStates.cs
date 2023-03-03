@@ -18,7 +18,8 @@ namespace MoreMountains.CorgiEngine
 			ControlledMovement,
 			Frozen,
 			Paused,
-			Dead
+			Dead,
+			Stunned
 		}
 
 		/// The possible Movement States the character can be in. These usually correspond to their own class, 
@@ -43,7 +44,14 @@ namespace MoreMountains.CorgiEngine
 			Pushing,
 			DoubleJumping,
 			WallJumping,
-			LadderClimbing			
+			LadderClimbing,
+			SwimmingIdle,
+			Gliding,
+			Flying,
+			FollowingPath,
+			LedgeHanging,
+			LedgeClimbing,
+			Rolling
 		}
 	}
 }

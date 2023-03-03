@@ -3,7 +3,7 @@ using System.Collections;
 using MoreMountains.Tools;
 
 namespace MoreMountains.CorgiEngine
-{	
+{
 	/// <summary>
 	/// This class allows for a 3D character to grab its current weapon's handles, and look wherever it's aiming.
 	/// There's a bit of setup involved. You need to have a CharacterHandleWeapon component on your character, it needs an animator with IKPass active (this is set in the Layers tab of the animator)
@@ -11,7 +11,8 @@ namespace MoreMountains.CorgiEngine
 	/// And you need to put that script on the same gameobject as the animator (otherwise it won't work). 
 	/// Finally, you need to set left and right handles (or only one of these) on your weapon(s). 
 	/// </summary>
-	public class WeaponIK : MonoBehaviour 
+	[AddComponentMenu("Corgi Engine/Weapons/Weapon IK")]
+	public class WeaponIK : CorgiMonoBehaviour 
 	{
 		protected Animator _animator;
 		protected Transform _leftHandTarget = null;
@@ -19,7 +20,7 @@ namespace MoreMountains.CorgiEngine
 
 		protected virtual void Start()
 		{
-			_animator = GetComponent<Animator> ();
+			_animator = this.gameObject.GetComponent<Animator> ();
 		}
 
 		/// <summary>

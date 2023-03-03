@@ -16,10 +16,10 @@ namespace MoreMountains.CorgiEngine
 		/// <c>false</c>
 		protected override bool CheckIfPickable()
 		{
-			_character = _collider.GetComponent<Character>();
+			_character = _pickingCollider.GetComponent<Character>();
 
 			// if what's colliding with the coin ain't a characterBehavior, we do nothing and exit
-			if ((_character == null) || (_collider.GetComponent<SuperHipsterBrosHealth>() == null))
+			if ((_character == null) || (_pickingCollider.GetComponent<SuperHipsterBrosHealth>() == null))
 			{
 				return false;
 			}
@@ -33,10 +33,10 @@ namespace MoreMountains.CorgiEngine
 		/// <summary>
 		/// doubles the size of the character behavior when the object gets picked
 		/// </summary>
-		protected override void Pick()
+		protected override void Pick(GameObject picker)
 		{
 			// double the size of the character behavior
-			_collider.GetComponent<SuperHipsterBrosHealth>().Grow(2f);
+			_pickingCollider.GetComponent<SuperHipsterBrosHealth>().Grow(2f);
 		}
 	}
 }

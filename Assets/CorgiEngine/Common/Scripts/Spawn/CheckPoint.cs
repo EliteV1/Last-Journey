@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using MoreMountains.Tools;
+using UnityEngine.Events;
 
 namespace MoreMountains.CorgiEngine
 {	
@@ -10,20 +11,34 @@ namespace MoreMountains.CorgiEngine
 	/// </summary>
 	[RequireComponent(typeof(BoxCollider2D))]
 	[AddComponentMenu("Corgi Engine/Spawn/Checkpoint")]
-	public class CheckPoint : MonoBehaviour 
+	public class CheckPoint : CorgiMonoBehaviour 
 	{
 		[Header("Spawn")]
-		[Information("Add this script to a (preferrably empty) GameObject and it'll be added to the level's checkpoint list, allowing you to respawn from there. If you bind it to the LevelManager's starting point, that's where your character will spawn at the start of the level. And here you can decide whether the character should spawn facing left or right.",InformationAttribute.InformationType.Info,false)]
+		[MMInformation("Add this script to a (preferrably empty) GameObject and it'll be added to the level's checkpoint list, allowing you to respawn from there. If you bind it to the LevelManager's starting point, that's where your character will spawn at the start of the level. And here you can decide whether the character should spawn facing left or right.",MMInformationAttribute.InformationType.Info,false)]
+
+		/// the direction the character should face when spawning at this checkpoint
+		[Tooltip("the direction the character should face when spawning at this checkpoint")]
 		public Character.FacingDirections FacingDirection = Character.FacingDirections.Right ;
+		/// whether or not this checkpoint should override any order and assign itself on entry
+		[Tooltip("whether or not this checkpoint should override any order and assign itself on entry")]
+		public bool ForceAssignation = false;
+		/// the order of the checkpoint
+		[Tooltip("the order of the checkpoint")]
+		public int CheckPointOrder;
+		/// whether or not this checkpoint can be reached more than once
+		[Tooltip("whether or not this checkpoint can be reached more than once")]
+		public bool CanBeReachedMoreThanOnce = true;
+		/// an event to trigger when this checkpoint is reached
+		[Tooltip("an event to trigger when this checkpoint is reached")]
+		public UnityEvent OnCheckpointReached;
 
 		protected bool _reached = false;
+		protected List<Respawnable> _listeners;
 
-	    protected List<Respawnable> _listeners;
-
-	    /// <summary>
-	    /// Initializes the list of listeners
-	    /// </summary>
-	    protected virtual void Awake () 
+		/// <summary>
+		/// Initializes the list of listeners
+		/// </summary>
+		protected virtual void Awake () 
 		{
 			_listeners = new List<Respawnable>();
 		}
@@ -50,17 +65,18 @@ namespace MoreMountains.CorgiEngine
 		/// <summary>
 		/// Describes what happens when something enters the checkpoint
 		/// </summary>
-		/// <param name="collider">Something colliding with the water.</param>
+		/// <param name="collider">The Collider2D colliding with the checkpoint.</param>
 		protected virtual void OnTriggerEnter2D(Collider2D collider)
 		{
 			Character character = collider.GetComponent<Character>();
 
 			if (character == null) { return; }
 			if (character.CharacterType != Character.CharacterTypes.Player) { return; }
-			if (_reached) { return; }
-			if (LevelManager.Instance == null) { return; }
-
+			if (_reached && !CanBeReachedMoreThanOnce) { return; }
+			if (!LevelManager.HasInstance) { return; }
+			OnCheckpointReached?.Invoke();
 			LevelManager.Instance.SetCurrentCheckpoint(this);
+			_reached = true;
 		}
 
 		/// <summary>
@@ -70,7 +86,7 @@ namespace MoreMountains.CorgiEngine
 		{	
 			#if UNITY_EDITOR
 
-			if (LevelManager.Instance == null)
+			if (!LevelManager.HasInstance)
 			{
 				return;
 			}

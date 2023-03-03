@@ -191,18 +191,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 1024
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -847,36 +835,36 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      coin_0: 21300000
-      coin_1: 21300002
-      coin_10: 21300020
-      coin_11: 21300022
-      coin_12: 21300024
-      coin_13: 21300026
-      coin_14: 21300028
-      coin_15: 21300030
-      coin_16: 21300032
-      coin_17: 21300034
-      coin_18: 21300036
-      coin_19: 21300038
-      coin_2: 21300004
-      coin_20: 21300040
-      coin_21: 21300042
-      coin_22: 21300044
-      coin_23: 21300046
-      coin_24: 21300048
-      coin_25: 21300050
-      coin_26: 21300052
-      coin_27: 21300054
-      coin_28: 21300056
-      coin_29: 21300058
-      coin_3: 21300006
       coin_4: 21300008
-      coin_5: 21300010
-      coin_6: 21300012
-      coin_7: 21300014
-      coin_8: 21300016
+      coin_22: 21300044
+      coin_3: 21300006
+      coin_21: 21300042
+      coin_10: 21300020
+      coin_0: 21300000
       coin_9: 21300018
+      coin_29: 21300058
+      coin_2: 21300004
+      coin_13: 21300026
+      coin_18: 21300036
+      coin_7: 21300014
+      coin_20: 21300040
+      coin_25: 21300050
+      coin_28: 21300056
+      coin_1: 21300002
+      coin_23: 21300046
+      coin_17: 21300034
+      coin_12: 21300024
+      coin_16: 21300032
+      coin_27: 21300054
+      coin_11: 21300022
+      coin_15: 21300030
+      coin_14: 21300028
+      coin_19: 21300038
+      coin_5: 21300010
+      coin_8: 21300016
+      coin_6: 21300012
+      coin_24: 21300048
+      coin_26: 21300052
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

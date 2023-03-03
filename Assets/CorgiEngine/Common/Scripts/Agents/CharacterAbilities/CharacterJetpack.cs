@@ -15,37 +15,59 @@ namespace MoreMountains.CorgiEngine
 		public override string HelpBoxText() { return "Add this component to a character and it'll be able to activate a jetpack and fly through the level. Here you can define the force to apply when jetpacking, the particle system to use, various fuel info, and optionnally what sound to play when the jetpack gets fully refueled"; }
 
 		[Header("Jetpack")]
+
 		/// the duration (in seconds) during which we'll disable the collider when taking off jetpacking from a moving platform
+		[Tooltip("the duration (in seconds) during which we'll disable the collider when taking off jetpacking from a moving platform")]
 		public float MovingPlatformsJumpCollisionOffDuration=0.05f;
 		/// the jetpack associated to the character
-		public ParticleSystem ParticleEmitter;		
+		[Tooltip("the jetpack associated to the character")]
+		public ParticleSystem ParticleEmitter;
 		/// the force applied by the jetpack
+		[Tooltip("the force applied by the jetpack")]
 		public float JetpackForce = 2.5f;	
 
 		[Header("Fuel")]
+
 		/// true if the character has unlimited fuel for its jetpack
+		[Tooltip("true if the character has unlimited fuel for its jetpack")]
 		public bool JetpackUnlimited = false;
 		/// the maximum duration (in seconds) of the jetpack
+		[Tooltip("the maximum duration (in seconds) of the jetpack")]
 		public float JetpackFuelDuration = 5f;
-		/// the jetpack refuel cooldown
+		/// the jetpack refuel cooldown, in seconds
+		[Tooltip("the jetpack refuel cooldown, in seconds")]
 		public float JetpackRefuelCooldown=1f;
-		/// the remaining jetpack fuel duration (in seconds)
-		public float JetpackFuelDurationLeft{get; protected set;}
+		/// the speed at which the jetpack refuels
+		[Tooltip("the speed at which the jetpack refuels")]
+		public float RefuelSpeed = 0.5f;
 		/// the minimum amount of fuel required in the tank to be able to jetpack again
+		[Tooltip("the minimum amount of fuel required in the tank to be able to jetpack again")]
 		public float MinimumFuelRequirement = 0.2f;
 
 		[Header("Jetpack Sounds")]
 		/// The sound to play when the jetpack is refueled again
-		public AudioClip JetpackRefueledSfx; 
+		[Tooltip("The sound to play when the jetpack is refueled again")]
+		public AudioClip JetpackRefueledSfx;
 
+		[Header("Debug")]
+		/// the remaining jetpack fuel duration (in seconds)
+		[MMReadOnly]
+		public float JetpackFuelDurationLeft = 0f;
+		
+		/// returns true if this jetpack still has fuel left, false otherwise
+		public bool FuelLeft { get { return (JetpackUnlimited || (JetpackFuelDurationLeft > 0f)) ; } }
 
-
-		protected bool _stillFuelLeft = true;
 		protected bool _refueling = false;
 		protected bool _jetpacking = true;
 		protected Vector3 _initialPosition;
 		protected AudioSource _jetpackUsedSound;
 		protected WaitForSeconds _jetpackRefuelCooldownWFS;
+		protected float _timer;
+		protected float _jetpackStoppedAt;
+
+		// animation parameters
+		protected const string _jetpackingAnimationParameterName = "Jetpacking";
+		protected int _jetpackingAnimationParameter;
 
 		/// <summary>
 		/// On Start(), we grab our particle emitter if there's one, and setup our fuel reserves
@@ -63,11 +85,11 @@ namespace MoreMountains.CorgiEngine
 			JetpackFuelDurationLeft = JetpackFuelDuration;
 			_jetpackRefuelCooldownWFS = new WaitForSeconds (JetpackRefuelCooldown);
 
-            if (GUIManager.Instance!= null && _character.CharacterType == Character.CharacterTypes.Player)
-            { 
+			if (GUIManager.HasInstance && _character.CharacterType == Character.CharacterTypes.Player)
+			{ 
 				GUIManager.Instance.SetJetpackBar(!JetpackUnlimited, _character.PlayerID);
 				UpdateJetpackBar();
-            }
+			}
 		}
 
 		/// <summary>
@@ -80,7 +102,7 @@ namespace MoreMountains.CorgiEngine
 				JetpackStart();
 			}			
 			
-			if (_inputManager.JetpackButton.State.CurrentState == MMInput.ButtonStates.ButtonUp)
+			if ((_inputManager.JetpackButton.State.CurrentState == MMInput.ButtonStates.ButtonUp) && (_jetpacking))
 			{
 				JetpackStop();
 			}
@@ -91,24 +113,23 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public virtual void JetpackStart()
 		{
-
-			if ((!AbilityPermitted) // if the ability is not permitted
-				|| (!_stillFuelLeft) // or if there's no fuel left
-				|| (_movement.CurrentState == CharacterStates.MovementStates.Crawling)
-				|| (_movement.CurrentState == CharacterStates.MovementStates.Crouching)
-				|| (_movement.CurrentState == CharacterStates.MovementStates.Dashing)
-				|| (_movement.CurrentState == CharacterStates.MovementStates.Gripping) // or if we're in the gripping state
-				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)) // or if we're not in normal conditions
+			if ((!AbilityAuthorized) // if the ability is not permitted
+			    || (!FuelLeft) // or if there's no fuel left
+			    || (_movement.CurrentState == CharacterStates.MovementStates.Crawling)
+			    || (_movement.CurrentState == CharacterStates.MovementStates.Crouching)
+			    || (_movement.CurrentState == CharacterStates.MovementStates.LedgeHanging)
+			    || (_movement.CurrentState == CharacterStates.MovementStates.Dashing)
+			    || (_movement.CurrentState == CharacterStates.MovementStates.Gripping) // or if we're in the gripping state
+			    || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)) // or if we're not in normal conditions
 			{
 				return;
 			}				
 
 			// if the jetpack is not unlimited and if we don't have fuel left
-			if ((!JetpackUnlimited) && (JetpackFuelDurationLeft <= 0f)) 
+			if (!FuelLeft) 
 			{
 				// we stop the jetpack and exit
 				JetpackStop();
-				_stillFuelLeft = false;
 				return;
 			}
 
@@ -126,11 +147,11 @@ namespace MoreMountains.CorgiEngine
 			} 
 
 			// if this is the first time we're here, we trigger our sounds
-			if (_movement.CurrentState != CharacterStates.MovementStates.Jetpacking)
+			if ((_movement.CurrentState != CharacterStates.MovementStates.Jetpacking) && !_startFeedbackIsPlaying)
 			{
 				// we play the jetpack start sound 
-				PlayAbilityStartSfx();
-				PlayAbilityUsedSfx();
+				PlayAbilityStartFeedbacks();
+				MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.Jetpack, MMCharacterEvent.Moments.Start);
 				_jetpacking = true;
 			}
 
@@ -142,13 +163,6 @@ namespace MoreMountains.CorgiEngine
 				ParticleSystem.EmissionModule emissionModule = ParticleEmitter.emission;
 				emissionModule.enabled=true;
 			}
-
-			// if the jetpack is not unlimited, we start burning fuel
-			if (!JetpackUnlimited) 
-			{
-				StartCoroutine (JetpackFuelBurn ());
-				
-			}
 		}
 		
 		/// <summary>
@@ -156,9 +170,10 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public virtual void JetpackStop()
 		{
-			if ((!AbilityPermitted) // if the ability is not permitted
-				|| (_movement.CurrentState == CharacterStates.MovementStates.Gripping) // or if we're in the gripping state
-				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)) // or if we're not in normal conditions
+			if ((!AbilityAuthorized) // if the ability is not permitted
+			    || (_movement.CurrentState == CharacterStates.MovementStates.Gripping) // or if we're in the gripping state
+			    || (_movement.CurrentState == CharacterStates.MovementStates.LedgeHanging) // or if we're in the ledge hanging state
+			    || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)) // or if we're not in normal conditions
 				return;
 
 			TurnJetpackElementsOff ();
@@ -167,13 +182,17 @@ namespace MoreMountains.CorgiEngine
 			_movement.RestorePreviousState();
 		}
 
+		/// <summary>
+		/// Stops the jetpack sounds, particles and state
+		/// </summary>
 		protected virtual void TurnJetpackElementsOff()
 		{
 			// we play our stop sound
 			if (_movement.CurrentState == CharacterStates.MovementStates.Jetpacking)
 			{
-				StopAbilityUsedSfx();
-				PlayAbilityStopSfx();
+				StopStartFeedbacks();
+				PlayAbilityStopFeedbacks();
+				MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.Jetpack, MMCharacterEvent.Moments.End);
 			}
 
 			// if we have a jetpack particle emitter, we turn it off
@@ -184,61 +203,9 @@ namespace MoreMountains.CorgiEngine
 			}
 
 			// if the jetpack is not unlimited, we start refueling
-			if (!JetpackUnlimited)
-			{
-				StartCoroutine (JetpackRefuel());
-			}
+			_jetpackStoppedAt = Time.time;
 			_jetpacking = false;
 		}
-
-
-	    /// <summary>
-	    /// Burns the jetpack fuel
-	    /// </summary>
-	    /// <returns>The fuel burn.</returns>
-	    protected virtual IEnumerator JetpackFuelBurn()
-		{
-			// while the character is jetpacking and while we have fuel left, we decrease the remaining fuel
-			float timer=JetpackFuelDurationLeft;
-			while ((timer > 0) && (_movement.CurrentState == CharacterStates.MovementStates.Jetpacking) && (JetpackFuelDurationLeft <= timer ))
-			{
-				timer -= Time.deltaTime;
-				JetpackFuelDurationLeft=timer;
-				UpdateJetpackBar();
-				yield return 0;
-			}
-		}
-
-	    /// <summary>
-	    /// Refills the jetpack fuel
-	    /// </summary>
-	    /// <returns>The fuel refill.</returns>
-	    protected virtual IEnumerator JetpackRefuel()
-		{
-			// we wait for a while before starting to refill
-			yield return _jetpackRefuelCooldownWFS;
-			_refueling = true;
-			// then we progressively refill the jetpack fuel
-			float refuelDuration = JetpackFuelDurationLeft;
-			while ((refuelDuration < JetpackFuelDuration) && (_movement.CurrentState != CharacterStates.MovementStates.Jetpacking))
-			{
-				refuelDuration += Time.deltaTime/2;
-				JetpackFuelDurationLeft = refuelDuration;
-				UpdateJetpackBar();
-				// we prevent the character to jetpack again while at low fuel and refueling
-				if ((!_stillFuelLeft) && (refuelDuration > MinimumFuelRequirement))
-				{
-					_stillFuelLeft = true;
-				}
-				yield return 0;
-			}
-			_refueling = false;
-			// if we're full, we play our refueled sound 
-			if (System.Math.Abs (JetpackFuelDurationLeft - JetpackFuelDuration) < JetpackFuelDuration/100)
-			{
-				PlayJetpackRefueledSfx ();
-			}
-		}	
 
 		/// <summary>
 		/// Every frame, we check if our character is colliding with the ceiling. If that's the case we cap its vertical force
@@ -247,20 +214,73 @@ namespace MoreMountains.CorgiEngine
 		{
 			base.ProcessAbility();
 
-			// if we're not walking anymore, we stop our walking sound
-			if (_movement.CurrentState != CharacterStates.MovementStates.Jetpacking && _abilityInProgressSfx != null)
+			BurnFuel();
+			Refuel();
+			
+			// if we're not jetpacking anymore, we stop our jetpacking feedback
+			if ((_movement.CurrentState != CharacterStates.MovementStates.Jetpacking) && _startFeedbackIsPlaying)
 			{
-				StopAbilityUsedSfx();
+				StopStartFeedbacks();
+				PlayAbilityStopFeedbacks();
+				MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.Jetpack, MMCharacterEvent.Moments.End);
 			}
 
 			if (_movement.CurrentState != CharacterStates.MovementStates.Jetpacking && _jetpacking )
 			{
 				TurnJetpackElementsOff ();
 			}
+		}
 
-			if (_controller.State.IsCollidingAbove && (_movement.CurrentState != CharacterStates.MovementStates.Jetpacking))
+		/// <summary>
+		/// Consumes fuel if needed
+		/// </summary>
+		protected virtual void BurnFuel()
+		{
+			if (!JetpackUnlimited)
 			{
-				_controller.SetVerticalForce(0);
+				if ((JetpackFuelDurationLeft > 0) && (_movement.CurrentState == CharacterStates.MovementStates.Jetpacking))
+				{
+					JetpackFuelDurationLeft -= Time.deltaTime;
+					if (JetpackFuelDurationLeft < 0)
+					{
+						JetpackFuelDurationLeft = 0f;
+					}
+					UpdateJetpackBar();
+				}	
+			}
+		}
+
+		/// <summary>
+		/// Refuels the jetpack if needed
+		/// </summary>
+		protected virtual void Refuel() 
+		{
+			if (JetpackUnlimited)
+			{
+				return;
+			}
+
+			// we wait for a while before starting to refill
+			if (Time.time - _jetpackStoppedAt < JetpackRefuelCooldown)
+			{
+				return;
+			}
+			
+			//_refueling = false;
+
+			// then we progressively refill the jetpack fuel
+			if ((JetpackFuelDurationLeft < JetpackFuelDuration) && (_movement.CurrentState != CharacterStates.MovementStates.Jetpacking))
+			{
+				//_refueling = true;
+				JetpackFuelDurationLeft += Time.deltaTime * RefuelSpeed;
+				UpdateJetpackBar();
+				
+				// if we're full, we play our refueled sound 
+				if (System.Math.Abs (JetpackFuelDurationLeft - JetpackFuelDuration) < JetpackFuelDuration/100)
+				{
+					JetpackFuelDurationLeft = JetpackFuelDuration;
+					PlayJetpackRefueledSfx ();
+				}
 			}
 		}
 
@@ -269,9 +289,12 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void UpdateJetpackBar()
 		{
-			if ( (GUIManager.Instance != null) && (_character.CharacterType == Character.CharacterTypes.Player) )
+			if (Application.isPlaying)
 			{
-				GUIManager.Instance.UpdateJetpackBar(JetpackFuelDurationLeft,0f,JetpackFuelDuration, _character.PlayerID);
+				if ((GUIManager.HasInstance) && (_character.CharacterType == Character.CharacterTypes.Player))
+				{
+					GUIManager.Instance.UpdateJetpackBar(JetpackFuelDurationLeft, 0f, JetpackFuelDuration, _character.PlayerID);
+				}
 			}
 		}
 
@@ -280,6 +303,11 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void Flip()
 		{
+			if (_character == null)
+			{
+				Initialization ();
+			}
+
 			if (ParticleEmitter != null) 
 			{
 				// we invert the rotation of the particle emitter
@@ -288,7 +316,7 @@ namespace MoreMountains.CorgiEngine
 				// we mirror its position around the transform's center
 				if (ParticleEmitter.transform.localPosition == _initialPosition)
 				{
-					ParticleEmitter.transform.localPosition = Vector3.Scale (_initialPosition, _character.FlipValue);	
+					ParticleEmitter.transform.localPosition = Vector3.Scale (_initialPosition, _character.ModelFlipValue);	
 				} 
 				else 
 				{
@@ -302,13 +330,16 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void PlayJetpackRefueledSfx()
 		{
-			if (JetpackRefueledSfx!=null) {	SoundManager.Instance.PlaySound(JetpackRefueledSfx,transform.position); }
+			if (JetpackRefueledSfx != null)
+			{
+				MMSoundManagerSoundPlayEvent.Trigger(JetpackRefueledSfx, MMSoundManager.MMSoundManagerTracks.Sfx, this.transform.position);
+			}
 		}	
 
 		/// <summary>
 		/// When the character dies we stop its jetpack
 		/// </summary>
-		public override void Reset()
+		public override void ResetAbility()
 		{
 			// if we have a jetpack particle emitter, we turn it off
 			if (ParticleEmitter!=null)
@@ -316,19 +347,22 @@ namespace MoreMountains.CorgiEngine
 				ParticleSystem.EmissionModule emissionModule = ParticleEmitter.emission;
 				emissionModule.enabled=false;
 			}
-			StopAbilityUsedSfx();
+			StopStartFeedbacks();
 			JetpackFuelDurationLeft = JetpackFuelDuration;
 			UpdateJetpackBar();
-			_movement.ChangeState (CharacterStates.MovementStates.Idle);
-			_stillFuelLeft = true;
+			if (_animator != null)
+			{
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _jetpackingAnimationParameter, false, _character._animatorParameters, _character.PerformAnimatorSanityChecks);	
+			}
+			_movement?.ChangeState (CharacterStates.MovementStates.Idle);
 		}
-
+        
 		/// <summary>
 		/// Adds required animator parameters to the animator parameters list if they exist
 		/// </summary>
 		protected override void InitializeAnimatorParameters()
 		{
-			RegisterAnimatorParameter ("Jetpacking", AnimatorControllerParameterType.Bool);
+			RegisterAnimatorParameter (_jetpackingAnimationParameterName, AnimatorControllerParameterType.Bool, out _jetpackingAnimationParameter);
 		}
 
 		/// <summary>
@@ -336,7 +370,7 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimator.UpdateAnimatorBool(_animator,"Jetpacking",(_movement.CurrentState == CharacterStates.MovementStates.Jetpacking),_character._animatorParameters);
+			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _jetpackingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Jetpacking), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 		}
 	}
 }

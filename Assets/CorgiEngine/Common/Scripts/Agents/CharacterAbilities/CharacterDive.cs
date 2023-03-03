@@ -13,9 +13,15 @@ namespace MoreMountains.CorgiEngine
 		public override string HelpBoxText() { return "This component allows your character to dive (by pressing the dash button + the down direction while in the air). Here you can define how much the camera should shake on impact, and how fast the dive should be."; }
 
 		/// Shake parameters : intensity, duration (in seconds) and decay
+		[Tooltip("Shake parameters : intensity, duration (in seconds) and decay")]
 		public Vector3 ShakeParameters = new Vector3(1.5f,0.5f,1f);
 		/// the vertical acceleration applied when diving
+		[Tooltip("the vertical acceleration applied when diving")]
 		public float DiveAcceleration = 2f;
+
+		// animation parameters
+		protected const string _divingAnimationParameterName = "Diving";
+		protected int _divingAnimationParameter;
 
 		/// <summary>
 		/// Every frame, we check input to see if we should dive
@@ -23,7 +29,7 @@ namespace MoreMountains.CorgiEngine
 		protected override void HandleInput()
 		{
 			if ((_inputManager.DashButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)
-				&& (_inputManager.PrimaryMovement.y < -_inputManager.Threshold.y))
+			    && (_verticalInput < -_inputManager.Threshold.y))
 			{
 				// we start the dive coroutine
 				InitiateDive();
@@ -32,10 +38,10 @@ namespace MoreMountains.CorgiEngine
 
 		protected virtual void InitiateDive()
 		{
-			if ( !AbilityPermitted // if the ability is not permitted
-				|| (_controller.State.IsGrounded) // or if the character is grounded
-				|| (_movement.CurrentState == CharacterStates.MovementStates.Gripping) // or if it's gripping
-				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)) // or if we're not under normal conditions
+			if ( !AbilityAuthorized // if the ability is not permitted
+			     || (_controller.State.IsGrounded) // or if the character is grounded
+			     || (_movement.CurrentState == CharacterStates.MovementStates.Gripping) // or if it's gripping
+			     || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)) // or if we're not under normal conditions
 			{
 				// we do nothing and exit
 				return;
@@ -45,13 +51,13 @@ namespace MoreMountains.CorgiEngine
 		}
 
 		/// <summary>
-	    /// Coroutine used to make the player dive vertically
-	    /// </summary>
-	    protected virtual IEnumerator Dive()
-		{	
+		/// Coroutine used to make the player dive vertically
+		/// </summary>
+		protected virtual IEnumerator Dive()
+		{
 			// we start our sounds
-			PlayAbilityStartSfx();
-			PlayAbilityUsedSfx();
+			PlayAbilityStartFeedbacks();
+			MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.Dive, MMCharacterEvent.Moments.Start);
 
 			// we make sure collisions are on
 			_controller.CollisionsOn();
@@ -61,8 +67,13 @@ namespace MoreMountains.CorgiEngine
 			// while the player is not grounded, we force it to go down fast
 			while (!_controller.State.IsGrounded)
 			{
+				if (_movement.CurrentState == CharacterStates.MovementStates.Gripping)
+				{
+					yield break;
+				}
+				
 				_controller.SetVerticalForce(-Mathf.Abs(_controller.Parameters.Gravity)*DiveAcceleration);
-				yield return 0; //go to next frame
+				yield return null; //go to next frame
 			}
 			
 			// once the player is grounded, we shake the camera, and restore the diving state to false
@@ -72,8 +83,9 @@ namespace MoreMountains.CorgiEngine
 			}
 
 			// we play our exit sound
-			StopAbilityUsedSfx();
-			PlayAbilityStopSfx();
+			StopStartFeedbacks();
+			PlayAbilityStopFeedbacks();
+			MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.Dive, MMCharacterEvent.Moments.End);
 
 			_movement.ChangeState(CharacterStates.MovementStates.Idle);
 		}
@@ -83,7 +95,7 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void InitializeAnimatorParameters()
 		{
-			RegisterAnimatorParameter ("Diving", AnimatorControllerParameterType.Bool);
+			RegisterAnimatorParameter (_divingAnimationParameterName, AnimatorControllerParameterType.Bool, out _divingAnimationParameter);
 		}
 
 		/// <summary>
@@ -91,7 +103,7 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimator.UpdateAnimatorBool(_animator,"Diving",(_movement.CurrentState == CharacterStates.MovementStates.Diving),_character._animatorParameters);
+			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _divingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Diving),_character._animatorParameters, _character.PerformAnimatorSanityChecks);
 		}
 	}
 }

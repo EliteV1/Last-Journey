@@ -161,18 +161,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 4096
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -607,26 +595,26 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      spacecorgi_climb-climb_0: 21300000
-      spacecorgi_climb-climb_1: 21300002
-      spacecorgi_climb-climb_10: 21300020
-      spacecorgi_climb-climb_11: 21300022
-      spacecorgi_climb-climb_12: 21300024
-      spacecorgi_climb-climb_13: 21300026
-      spacecorgi_climb-climb_14: 21300028
-      spacecorgi_climb-climb_15: 21300030
-      spacecorgi_climb-climb_16: 21300032
-      spacecorgi_climb-climb_17: 21300034
-      spacecorgi_climb-climb_18: 21300036
-      spacecorgi_climb-climb_19: 21300038
-      spacecorgi_climb-climb_2: 21300004
-      spacecorgi_climb-climb_3: 21300006
-      spacecorgi_climb-climb_4: 21300008
-      spacecorgi_climb-climb_5: 21300010
       spacecorgi_climb-climb_6: 21300012
-      spacecorgi_climb-climb_7: 21300014
-      spacecorgi_climb-climb_8: 21300016
       spacecorgi_climb-climb_9: 21300018
+      spacecorgi_climb-climb_1: 21300002
+      spacecorgi_climb-climb_4: 21300008
+      spacecorgi_climb-climb_3: 21300006
+      spacecorgi_climb-climb_11: 21300022
+      spacecorgi_climb-climb_19: 21300038
+      spacecorgi_climb-climb_7: 21300014
+      spacecorgi_climb-climb_14: 21300028
+      spacecorgi_climb-climb_10: 21300020
+      spacecorgi_climb-climb_16: 21300032
+      spacecorgi_climb-climb_5: 21300010
+      spacecorgi_climb-climb_13: 21300026
+      spacecorgi_climb-climb_18: 21300036
+      spacecorgi_climb-climb_0: 21300000
+      spacecorgi_climb-climb_12: 21300024
+      spacecorgi_climb-climb_2: 21300004
+      spacecorgi_climb-climb_15: 21300030
+      spacecorgi_climb-climb_8: 21300016
+      spacecorgi_climb-climb_17: 21300034
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -146,18 +146,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -487,21 +475,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RectangleLookUp_0: 21300000
-      RectangleLookUp_1: 21300002
-      RectangleLookUp_10: 21300020
-      RectangleLookUp_11: 21300022
-      RectangleLookUp_12: 21300024
-      RectangleLookUp_13: 21300026
-      RectangleLookUp_14: 21300028
-      RectangleLookUp_2: 21300004
-      RectangleLookUp_3: 21300006
-      RectangleLookUp_4: 21300008
       RectangleLookUp_5: 21300010
-      RectangleLookUp_6: 21300012
-      RectangleLookUp_7: 21300014
+      RectangleLookUp_11: 21300022
+      RectangleLookUp_4: 21300008
+      RectangleLookUp_14: 21300028
       RectangleLookUp_8: 21300016
       RectangleLookUp_9: 21300018
+      RectangleLookUp_1: 21300002
+      RectangleLookUp_0: 21300000
+      RectangleLookUp_10: 21300020
+      RectangleLookUp_3: 21300006
+      RectangleLookUp_2: 21300004
+      RectangleLookUp_12: 21300024
+      RectangleLookUp_6: 21300012
+      RectangleLookUp_13: 21300026
+      RectangleLookUp_7: 21300014
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -16,22 +16,38 @@ namespace MoreMountains.CorgiEngine
 		public override string HelpBoxText() { return "Add this component to your character and it'll be able to cling to walls, slowing down its fall. Here you can define the slow factor (close to 0 : super slow, 1 : normal fall) and the tolerance (to account for tiny holes in the wall."; }
 
 		[Header("Wall Clinging")]
-		[Range(0.01f,1)]
+
 		/// the slow factor when wall clinging
-		public float WallClingingSlowFactor=0.6f;
+		[Tooltip("the slow factor when wall clinging")]
+		[Range(0.01f, 1)]
+		public float WallClingingSlowFactor = 0.6f;
+		/// the vertical offset to apply to raycasts for wall clinging
+		[Tooltip("the vertical offset to apply to raycasts for wall clinging")]
+		public float RaycastVerticalOffset = 0f;
 		/// the tolerance applied to compensate for tiny irregularities in the wall (slightly misplaced tiles for example)
+		[Tooltip("the tolerance applied to compensate for tiny irregularities in the wall (slightly misplaced tiles for example)")]
 		public float WallClingingTolerance = 0.3f;
+
+		[Header("Automation")]
+
+		/// if this is set to true, you won't need to press the opposite direction to wall cling, it'll be automatic anytime the character faces a wall
+		[Tooltip("if this is set to true, you won't need to press the opposite direction to wall cling, it'll be automatic anytime the character faces a wall")]
+		public bool InputIndependent = false;        
+
+		protected CharacterStates.MovementStates _stateLastFrame;
+		protected RaycastHit2D _raycast;
+		protected WallClingingOverride _wallClingingOverride;
+
+		// animation parameters
+		protected const string _wallClingingAnimationParameterName = "WallClinging";
+		protected int _wallClingingAnimationParameter;
 
 		/// <summary>
 		/// Checks the input to see if we should enter the WallClinging state
 		/// </summary>
 		protected override void HandleInput()
 		{
-			// if we're pressing left or right
-			if ( (_inputManager.PrimaryMovement.x <= -_inputManager.Threshold.x) || (_inputManager.PrimaryMovement.x >= _inputManager.Threshold.x) ) 
-			{
-				WallClinging();
-			}
+			WallClinging();
 		}
 
 		/// <summary>
@@ -40,53 +56,110 @@ namespace MoreMountains.CorgiEngine
 		public override void ProcessAbility()
 		{
 			base.ProcessAbility();
+
 			ExitWallClinging();
 			WallClingingLastFrame ();
 		}
 
 		/// <summary>
-	    /// Makes the player stick to a wall when jumping
-	    /// </summary>
-	    protected virtual void WallClinging()
+		/// Makes the player stick to a wall when jumping
+		/// </summary>
+		protected virtual void WallClinging()
 		{
-			if (!AbilityPermitted
-				|| (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
-				|| (_controller.State.IsGrounded)
-				|| (_controller.Speed.y >= 0) )
+			if (!AbilityAuthorized
+			    || (_condition.CurrentState != CharacterStates.CharacterConditions.Normal)
+			    || (_controller.State.IsGrounded)
+			    || (_controller.State.ColliderResized)
+			    || (_controller.Speed.y >= 0) )
 			{
 				return;
 			}
-
-			if ( ( (_controller.State.IsCollidingLeft) && (_inputManager.PrimaryMovement.x <= -_inputManager.Threshold.x) ) 
-				|| ( (_controller.State.IsCollidingRight) && (_inputManager.PrimaryMovement.x >= _inputManager.Threshold.x)))
+            
+			if (InputIndependent)
 			{
-				// we check for an override
-				WallClingingOverride wallClingingOverride = _controller.CurrentWallCollider.GetComponent<WallClingingOverride> ();
-				if (wallClingingOverride != null)
+				if (TestForWall())
 				{
-					// if we can't wallcling to this wall, we do nothing and exit
-					if (!wallClingingOverride.CanWallClingToThis)
-					{
-						return;
-					}
-					_controller.SlowFall (wallClingingOverride.WallClingingSlowFactor);	
+					EnterWallClinging();
 				}
-				else
-				{
-					// we slow the controller's fall speed
-					_controller.SlowFall (WallClingingSlowFactor);	
-				}
-
-				// if we weren't wallclinging before this frame, we start our sounds
-				if (_movement.CurrentState != CharacterStates.MovementStates.WallClinging)
-				{
-					// we start our sounds
-					PlayAbilityStartSfx();
-					PlayAbilityUsedSfx();
-				}
-
-				_movement.ChangeState (CharacterStates.MovementStates.WallClinging);							
 			}
+			else
+			{
+				if (((_controller.State.IsCollidingLeft) && (_horizontalInput <= -_inputManager.Threshold.x))
+				    || ((_controller.State.IsCollidingRight) && (_horizontalInput >= _inputManager.Threshold.x)))
+				{
+					EnterWallClinging();
+				}
+			}            
+		}
+
+		/// <summary>
+		/// Casts a ray to check if we're facing a wall
+		/// </summary>
+		/// <returns></returns>
+		protected virtual bool TestForWall()
+		{
+			// we then cast a ray to the direction's the character is facing, in a down diagonal.
+			// we could use the controller's IsCollidingLeft/Right for that, but this technique 
+			// compensates for walls that have small holes or are not perfectly flat
+			Vector3 raycastOrigin = _characterTransform.position;
+			Vector3 raycastDirection;
+			if (_character.IsFacingRight)
+			{
+				raycastOrigin = raycastOrigin + _characterTransform.right * _controller.Width() / 2 + _characterTransform.up * RaycastVerticalOffset;
+				raycastDirection = _characterTransform.right - _characterTransform.up;
+			}
+			else
+			{
+				raycastOrigin = raycastOrigin - _characterTransform.right * _controller.Width() / 2 + _characterTransform.up * RaycastVerticalOffset;
+				raycastDirection = -_characterTransform.right - _characterTransform.up;
+			}
+
+			// we cast our ray 
+			_raycast = MMDebug.RayCast(raycastOrigin, raycastDirection, WallClingingTolerance, _controller.PlatformMask & ~(_controller.OneWayPlatformMask | _controller.MovingOneWayPlatformMask), Color.black, _controller.Parameters.DrawRaycastsGizmos);
+
+			// we check if the ray hit anything. If it didn't, or if we're not moving in the direction of the wall, we exit
+			return _raycast;
+		}
+
+		/// <summary>
+		/// Enters the wall clinging state
+		/// </summary>
+		protected virtual void EnterWallClinging()
+		{
+			// we check for an override
+			if (_controller.CurrentWallCollider != null)
+			{
+				_wallClingingOverride = _controller.CurrentWallCollider.gameObject.MMGetComponentNoAlloc<WallClingingOverride>();
+			}
+			else if (_raycast.collider != null)
+			{
+				_wallClingingOverride = _raycast.collider.gameObject.MMGetComponentNoAlloc<WallClingingOverride>();
+			}
+            
+			if (_wallClingingOverride != null)
+			{
+				// if we can't wallcling to this wall, we do nothing and exit
+				if (!_wallClingingOverride.CanWallClingToThis)
+				{
+					return;
+				}
+				_controller.SlowFall(_wallClingingOverride.WallClingingSlowFactor);
+			}
+			else
+			{
+				// we slow the controller's fall speed
+				_controller.SlowFall(WallClingingSlowFactor);
+			}
+
+			// if we weren't wallclinging before this frame, we start our sounds
+			if ((_movement.CurrentState != CharacterStates.MovementStates.WallClinging) && !_startFeedbackIsPlaying)
+			{
+				// we start our feedbacks
+				PlayAbilityStartFeedbacks();
+				MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.WallCling, MMCharacterEvent.Moments.Start);
+			}
+
+			_movement.ChangeState(CharacterStates.MovementStates.WallClinging);
 		}
 
 		/// <summary>
@@ -99,7 +172,7 @@ namespace MoreMountains.CorgiEngine
 				// we prepare a boolean to store our exit condition value
 				bool shouldExit = false;
 				if ((_controller.State.IsGrounded) // if the character is grounded
-					|| (_controller.Speed.y >= 0))  // or if it's moving up
+				    || (_controller.Speed.y >= 0))  // or if it's moving up
 				{
 					// then we should exit
 					shouldExit = true;
@@ -108,50 +181,73 @@ namespace MoreMountains.CorgiEngine
 				// we then cast a ray to the direction's the character is facing, in a down diagonal.
 				// we could use the controller's IsCollidingLeft/Right for that, but this technique 
 				// compensates for walls that have small holes or are not perfectly flat
-				Vector3 raycastOrigin=transform.position;
+				Vector3 raycastOrigin = _characterTransform.position;
 				Vector3 raycastDirection;
 				if (_character.IsFacingRight) 
 				{ 
-					raycastOrigin = raycastOrigin + Vector3.right * _controller.Width()/2;
-					raycastDirection = Vector3.right + Vector3.down; 
+					raycastOrigin = raycastOrigin + _characterTransform.right * _controller.Width()/ 2 + _characterTransform.up * RaycastVerticalOffset;
+					raycastDirection = _characterTransform.right - _characterTransform.up; 
 				}
 				else
 				{
-					raycastOrigin = raycastOrigin + Vector3.left * _controller.Width()/2;
-					raycastDirection = Vector3.left + Vector3.down;
+					raycastOrigin = raycastOrigin - _characterTransform.right * _controller.Width()/ 2 + _characterTransform.up * RaycastVerticalOffset;
+					raycastDirection = - _characterTransform.right - _characterTransform.up;
 				}
-
-				// we cast our ray 
-				RaycastHit2D hit = MMDebug.RayCast (raycastOrigin,raycastDirection,WallClingingTolerance,_controller.PlatformMask | _controller.OneWayPlatformMask | _controller.MovingOneWayPlatformMask,Color.black,_controller.Parameters.DrawRaycastsGizmos);			
-
+                				
 				// we check if the ray hit anything. If it didn't, or if we're not moving in the direction of the wall, we exit
-				if (_character.IsFacingRight)
+				if (!InputIndependent)
 				{
-					if ((!hit) || (_inputManager.PrimaryMovement.x <= _inputManager.Threshold.x))
+					// we cast our ray 
+					RaycastHit2D hit = MMDebug.RayCast(raycastOrigin, raycastDirection, WallClingingTolerance, _controller.PlatformMask & ~(_controller.OneWayPlatformMask | _controller.MovingOneWayPlatformMask), Color.black, _controller.Parameters.DrawRaycastsGizmos);
+                    
+					if (_character.IsFacingRight)
 					{
-						shouldExit = true;
+						if ((!hit) || (_horizontalInput <= _inputManager.Threshold.x))
+						{
+							shouldExit = true;
+						}
+					}
+					else
+					{
+						if ((!hit) || (_horizontalInput >= -_inputManager.Threshold.x))
+						{
+							shouldExit = true;
+						}
 					}
 				}
 				else
 				{
-					if ((!hit) || (_inputManager.PrimaryMovement.x >= -_inputManager.Threshold.x))
+					if (_raycast.collider == null)
 					{
 						shouldExit = true;
 					}
 				}
-
+				
 				if (shouldExit)
 				{
-					// if we're not wallclinging anymore, we reset the slowFall factor, and reset our state.
-					_controller.SlowFall (0f);				
-					// we reset the state
-					_movement.ChangeState(CharacterStates.MovementStates.Idle);
-
-					// we play our exit sound
-					StopAbilityUsedSfx();
-					PlayAbilityStopSfx();
+					ProcessExit();
 				}
 			}
+
+			if ((_stateLastFrame == CharacterStates.MovementStates.WallClinging) 
+			    && (_movement.CurrentState != CharacterStates.MovementStates.WallClinging)
+			    && _startFeedbackIsPlaying)
+			{
+				// we play our exit feedbacks
+				StopStartFeedbacks();
+				PlayAbilityStopFeedbacks();
+				MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.WallCling, MMCharacterEvent.Moments.End);
+			}
+
+			_stateLastFrame = _movement.CurrentState;
+		}
+
+		protected virtual void ProcessExit()
+		{
+			// if we're not wallclinging anymore, we reset the slowFall factor, and reset our state.
+			_controller.SlowFall(0f);
+			// we reset the state
+			_movement.ChangeState(CharacterStates.MovementStates.Idle);
 		}
 
 		/// <summary>
@@ -159,11 +255,19 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void WallClingingLastFrame()
 		{
-			if ((_movement.PreviousState == CharacterStates.MovementStates.WallClinging) && (_movement.CurrentState != CharacterStates.MovementStates.WallClinging))
+			if ((_movement.PreviousState == CharacterStates.MovementStates.WallClinging) 
+			    && (_movement.CurrentState != CharacterStates.MovementStates.WallClinging)
+			    && _startFeedbackIsPlaying)
 			{
 				_controller.SlowFall (0f);	
-				StopAbilityUsedSfx();
+				StopStartFeedbacks();
 			}
+		}
+        
+		protected override void OnDeath()
+		{
+			base.OnDeath();
+			ProcessExit();
 		}
 
 		/// <summary>
@@ -171,7 +275,7 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void InitializeAnimatorParameters()
 		{
-			RegisterAnimatorParameter ("WallClinging", AnimatorControllerParameterType.Bool);
+			RegisterAnimatorParameter (_wallClingingAnimationParameterName, AnimatorControllerParameterType.Bool, out _wallClingingAnimationParameter);
 		}
 
 		/// <summary>
@@ -179,8 +283,24 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimator.UpdateAnimatorBool(_animator,"WallClinging",(_movement.CurrentState == CharacterStates.MovementStates.WallClinging), _character._animatorParameters);
+			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _wallClingingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.WallClinging), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 		}
 		
+		/// <summary>
+		/// On reset ability, we cancel all the changes made
+		/// </summary>
+		public override void ResetAbility()
+		{
+			base.ResetAbility();
+			if (_condition.CurrentState == CharacterStates.CharacterConditions.Normal)
+			{
+				ProcessExit();	
+			}
+
+			if (_animator != null)
+			{
+				MMAnimatorExtensions.UpdateAnimatorBool(_animator, _wallClingingAnimationParameter, false, _character._animatorParameters, _character.PerformAnimatorSanityChecks);	
+			}
+		}
 	}
 }

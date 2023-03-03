@@ -8,20 +8,24 @@ namespace MoreMountains.CorgiEngine
 	/// <summary>
 	/// Dialogue box class. Don't add this directly to your game, look at DialogueZone instead.
 	/// </summary>
-	public class DialogueBox : MonoBehaviour 
+	public class DialogueBox : CorgiMonoBehaviour 
 	{
 		/// the text panel background
+		[Tooltip("the text panel background")]
 		public Image TextPanel;
 		/// the arrow pointing down on the dialogue box
+		[Tooltip("the arrow pointing down on the dialogue box")]
 		public Image TextPanelArrowDown;
 		/// the text to display
+		[Tooltip("the text to display")]
 		public Text DialogueText;
 		/// the Button A prompt
+		[Tooltip("the Button A prompt")]
 		public GameObject ButtonA;
 
-	    protected Color _backgroundColor;
-	    protected Color _textColor;
-	    protected SpriteRenderer _buttonSpriteRenderer;
+		protected Color _backgroundColor;
+		protected Color _textColor;
+		protected SpriteRenderer _buttonSpriteRenderer;
 		
 		/// <summary>
 		/// Changes the text.

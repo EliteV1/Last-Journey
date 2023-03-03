@@ -1,25 +1,44 @@
 ﻿using UnityEngine;
-using System.Collections;
 using MoreMountains.Tools;
+#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+using UnityEngine.InputSystem;
+#endif
 
 namespace MoreMountains.CorgiEngine
-{	
+{
 	/// <summary>
-	/// Add this component to a character and it'll be able to crouch and crawl
+	/// Add this component to a character and it'll be able to interact with button activated zones and objects
 	/// Animator parameters : Activating (bool)
 	/// </summary>
-	[AddComponentMenu("Corgi Engine/Character/Abilities/Character Button Activation")] 
-	public class CharacterButtonActivation : CharacterAbility 
+	[MMHiddenProperties("AbilityStopFeedbacks")]
+	[AddComponentMenu("Corgi Engine/Character/Abilities/Character Button Activation")]
+	public class CharacterButtonActivation : CharacterAbility
 	{
 		/// This method is only used to display a helpbox text at the beginning of the ability's inspector
 		public override string HelpBoxText() { return "This component allows your character to interact with button powered objects (dialogue zones, switches...). "; }
-
 		/// true if the character is in a dialogue zone
 		public bool InButtonActivatedZone {get;set;}
+		/// true if the zone is automated
+		public bool InButtonAutoActivatedZone { get; set; }
+		/// true if the zone prevents jump 
+		public bool InJumpPreventingZone { get; set; }
 		/// the current button activated zone
 		public ButtonActivated ButtonActivatedZone {get;set;}
 
+		[Header("Button Activation")]
+		/// whether or not this character can jump when in a button activated zone
+		[Tooltip("whether or not this character can jump when in a button activated zone")]
+		public bool PreventJumpWhenInZone = true;
+		/// the duration, in seconds, after an activation, during which no new activation can happen
+		[Tooltip("the duration, in seconds, after an activation, during which no new activation can happen")]
+		public float ActivationCooldownDuration = 0f;
+
 		protected bool _activating = false;
+		protected float _lastActivatedAt = -10f;
+
+		// animation parameters
+		protected const string _activatingAnimationParameterName = "Activating";
+		protected int _activatingAnimationParameter;
 
 		/// <summary>
 		/// Gets and stores components for further use
@@ -27,8 +46,8 @@ namespace MoreMountains.CorgiEngine
 		protected override void Initialization()
 		{
 			base.Initialization();
-			InButtonActivatedZone=false;
-			ButtonActivatedZone=null;
+			InButtonActivatedZone = false;
+			ButtonActivatedZone = null;
 		}
 
 		/// <summary>
@@ -36,19 +55,39 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void HandleInput()
 		{
-			if (_inputManager.JumpButton.State.CurrentState == MMInput.ButtonStates.ButtonDown)				
+			if (InButtonActivatedZone && (ButtonActivatedZone != null))
 			{
-				ButtonActivation();
-			}
-		}
+				if (Time.time - _lastActivatedAt < ActivationCooldownDuration)
+				{
+					return;
+				}
 
-		/// <summary>
-		/// Every frame, we check if we're crouched and if we still should be
-		/// </summary>
-		public override void ProcessAbility()
-		{
-			base.ProcessAbility();
-			_activating = false;
+				bool buttonPressed = false;
+				switch (ButtonActivatedZone.InputType)
+				{
+					case ButtonActivated.InputTypes.Default:
+						buttonPressed = (_inputManager.InteractButton.State.CurrentState == MMInput.ButtonStates.ButtonDown);
+						break;
+					#if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
+						case ButtonActivated.InputTypes.Button:
+						case ButtonActivated.InputTypes.Key:
+							buttonPressed = ButtonActivatedZone.InputActionPerformed;
+							break;
+					#else
+						case ButtonActivated.InputTypes.Button:
+							buttonPressed = (Input.GetButtonDown(_character.PlayerID + "_" + ButtonActivatedZone.InputButton)) ;
+							break;
+						case ButtonActivated.InputTypes.Key:
+							buttonPressed = (Input.GetKeyDown(ButtonActivatedZone.InputKey)) ;
+							break;
+					#endif
+				}
+
+				if (buttonPressed)
+				{
+					ButtonActivation();
+				}
+			}
 		}
 
 		/// <summary>
@@ -59,7 +98,7 @@ namespace MoreMountains.CorgiEngine
 			// if the player is in a button activated zone, we handle it
 			if ((InButtonActivatedZone)
 			    && (ButtonActivatedZone!=null)
-				&& (_condition.CurrentState == CharacterStates.CharacterConditions.Normal || _condition.CurrentState == CharacterStates.CharacterConditions.Frozen)
+			    && (_condition.CurrentState == CharacterStates.CharacterConditions.Normal || _condition.CurrentState == CharacterStates.CharacterConditions.Frozen)
 			    && (_movement.CurrentState != CharacterStates.MovementStates.Dashing))
 			{
 				// if the button can only be activated while grounded and if we're not grounded, we do nothing and exit
@@ -67,13 +106,29 @@ namespace MoreMountains.CorgiEngine
 				{
 					return;
 				}
-
+				// if it's an auto activated zone, we do nothing
+				if (ButtonActivatedZone.AutoActivation && !ButtonActivatedZone.AutoActivationAndButtonInteraction)
+				{
+					return;
+				}
 				// we trigger a character event
-				MMEventManager.TriggerEvent(new MMCharacterEvent(_character, MMCharacterEventTypes.ButtonActivation));
+				MMCharacterEvent.Trigger(_character, MMCharacterEventTypes.ButtonActivation);
 
-				ButtonActivatedZone.TriggerButtonAction();
+				ButtonActivatedZone.TriggerButtonAction(_character.gameObject);
+				PlayAbilityStartFeedbacks();
+
 				_activating = true;
 			}
+		}
+
+		/// <summary>
+		/// On Death we lose any connection we may have had to a button activated zone
+		/// </summary>
+		protected override void OnDeath()
+		{
+			base.OnDeath();
+			InButtonActivatedZone = false;
+			ButtonActivatedZone = null;
 		}
 
 		/// <summary>
@@ -81,7 +136,7 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void InitializeAnimatorParameters()
 		{
-			RegisterAnimatorParameter ("Activating", AnimatorControllerParameterType.Bool);
+			RegisterAnimatorParameter (_activatingAnimationParameterName, AnimatorControllerParameterType.Bool, out _activatingAnimationParameter);
 		}
 
 		/// <summary>
@@ -89,7 +144,20 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimator.UpdateAnimatorBool(_animator,"Activating", _activating, _character._animatorParameters);	
+			MMAnimatorExtensions.UpdateAnimatorBool(_animator,_activatingAnimationParameter, _activating, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
+			if (_activating && (ButtonActivatedZone != null) && (ButtonActivatedZone.AnimationTriggerParameterName != ""))
+			{
+				SetTriggerParameter();
+			}
+			_activating = false;
+		}
+
+		public virtual void SetTriggerParameter()
+		{
+			if ((ButtonActivatedZone != null) && (ButtonActivatedZone.AnimationTriggerParameterName != ""))
+			{
+				_animator.SetTrigger(ButtonActivatedZone.AnimationTriggerParameterName);
+			}            
 		}
 	}
 }

@@ -155,6 +155,12 @@ TextureImporter:
   - first:
       213: 21300100
     second: BiDirectionalLadder
+  - first:
+      213: 21300102
+    second: minimalYellowDoor
+  - first:
+      213: 21300104
+    second: minimalRedDoor
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -1364,6 +1370,48 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: minimalYellowDoor
+      rect:
+        serializedVersion: 2
+        x: 1694
+        y: 323
+        width: 100
+        height: 500
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 68305410000000000800000000000000
+      internalID: 21300102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: minimalRedDoor
+      rect:
+        serializedVersion: 2
+        x: 1808
+        y: 55
+        width: 100
+        height: 500
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88305410000000000800000000000000
+      internalID: 21300104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -1375,57 +1423,59 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BiDirectionalLadder: 21300100
-      blocks_0: 21300000
-      blocks_1: 21300002
-      blocks_10: 21300020
-      blocks_11: 21300022
-      blocks_12: 21300024
-      blocks_13: 21300026
-      blocks_14: 21300028
       blocks_15: 21300030
-      blocks_16: 21300032
-      blocks_17: 21300034
-      blocks_18: 21300036
-      blocks_19: 21300038
-      blocks_2: 21300004
-      blocks_20: 21300040
-      blocks_21: 21300042
-      blocks_22: 21300044
-      blocks_23: 21300046
       blocks_24: 21300048
-      blocks_25: 21300050
-      blocks_26: 21300052
-      blocks_27: 21300054
-      blocks_28: 21300056
+      blocks_22: 21300044
+      blocks_8: 21300016
       blocks_29: 21300058
+      blocks_12: 21300024
+      blocks_45: 21300090
+      minimalYellowDoor: 21300102
+      blocks_36: 21300072
       blocks_3: 21300006
+      blocks_48: 21300096
+      blocks_43: 21300086
+      blocks_18: 21300036
+      blocks_5: 21300010
+      blocks_23: 21300046
       blocks_30: 21300060
       blocks_31: 21300062
-      blocks_32: 21300064
       blocks_33: 21300066
-      blocks_34: 21300068
-      blocks_35: 21300070
-      blocks_36: 21300072
-      blocks_37: 21300074
+      blocks_2: 21300004
+      blocks_20: 21300040
+      blocks_26: 21300052
+      blocks_16: 21300032
       blocks_38: 21300076
-      blocks_39: 21300078
+      blocks_35: 21300070
+      blocks_0: 21300000
+      blocks_11: 21300022
+      blocks_7: 21300014
+      blocks_9: 21300018
       blocks_4: 21300008
-      blocks_40: 21300080
+      blocks_49: 21300098
+      blocks_1: 21300002
+      blocks_37: 21300074
       blocks_41: 21300082
       blocks_42: 21300084
-      blocks_43: 21300086
+      blocks_39: 21300078
+      blocks_40: 21300080
+      blocks_17: 21300034
+      blocks_25: 21300050
       blocks_44: 21300088
-      blocks_45: 21300090
+      blocks_14: 21300028
       blocks_46: 21300092
       blocks_47: 21300094
-      blocks_48: 21300096
-      blocks_49: 21300098
-      blocks_5: 21300010
+      blocks_27: 21300054
+      blocks_32: 21300064
+      blocks_34: 21300068
+      blocks_10: 21300020
+      minimalRedDoor: 21300104
+      blocks_28: 21300056
+      blocks_13: 21300026
+      blocks_21: 21300042
+      BiDirectionalLadder: 21300100
+      blocks_19: 21300038
       blocks_6: 21300012
-      blocks_7: 21300014
-      blocks_8: 21300016
-      blocks_9: 21300018
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -191,18 +191,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -847,36 +835,36 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RectangleIdle_0: 21300000
-      RectangleIdle_1: 21300002
-      RectangleIdle_10: 21300020
-      RectangleIdle_11: 21300022
-      RectangleIdle_12: 21300024
-      RectangleIdle_13: 21300026
-      RectangleIdle_14: 21300028
-      RectangleIdle_15: 21300030
-      RectangleIdle_16: 21300032
-      RectangleIdle_17: 21300034
-      RectangleIdle_18: 21300036
       RectangleIdle_19: 21300038
-      RectangleIdle_2: 21300004
-      RectangleIdle_20: 21300040
-      RectangleIdle_21: 21300042
+      RectangleIdle_12: 21300024
+      RectangleIdle_27: 21300054
+      RectangleIdle_13: 21300026
+      RectangleIdle_1: 21300002
+      RectangleIdle_24: 21300048
+      RectangleIdle_10: 21300020
       RectangleIdle_22: 21300044
       RectangleIdle_23: 21300046
-      RectangleIdle_24: 21300048
-      RectangleIdle_25: 21300050
-      RectangleIdle_26: 21300052
-      RectangleIdle_27: 21300054
-      RectangleIdle_28: 21300056
       RectangleIdle_29: 21300058
-      RectangleIdle_3: 21300006
-      RectangleIdle_4: 21300008
+      RectangleIdle_26: 21300052
+      RectangleIdle_25: 21300050
+      RectangleIdle_16: 21300032
       RectangleIdle_5: 21300010
-      RectangleIdle_6: 21300012
-      RectangleIdle_7: 21300014
-      RectangleIdle_8: 21300016
       RectangleIdle_9: 21300018
+      RectangleIdle_3: 21300006
+      RectangleIdle_20: 21300040
+      RectangleIdle_18: 21300036
+      RectangleIdle_28: 21300056
+      RectangleIdle_11: 21300022
+      RectangleIdle_14: 21300028
+      RectangleIdle_4: 21300008
+      RectangleIdle_7: 21300014
+      RectangleIdle_0: 21300000
+      RectangleIdle_15: 21300030
+      RectangleIdle_21: 21300042
+      RectangleIdle_8: 21300016
+      RectangleIdle_2: 21300004
+      RectangleIdle_6: 21300012
+      RectangleIdle_17: 21300034
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

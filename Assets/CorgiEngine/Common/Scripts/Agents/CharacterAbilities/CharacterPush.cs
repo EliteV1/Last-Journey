@@ -12,16 +12,30 @@ namespace MoreMountains.CorgiEngine
 	public class CharacterPush : CharacterAbility 
 	{
 		public override string HelpBoxText() { return "This component allows your character to push blocks. This is not a mandatory component, it will just override CorgiController push settings, and allow you to have a dedicated push animation."; }
+
 		/// If this is set to true, the Character will be able to push blocks
+		[Tooltip("If this is set to true, the Character will be able to push blocks")]
 		public bool CanPush = true;
 		/// the (x) force applied to the pushed object
+		[Tooltip("the (x) force applied to the pushed object")]
 		public float PushForce = 2f;
 		/// if this is true, the Character will only be able to push objects while grounded
+		[Tooltip("if this is true, the Character will only be able to push objects while grounded")]
 		public bool PushWhenGroundedOnly = true;
 		/// the length of the raycast used to detect if we're colliding with a pushable object. Increase this if your animation is flickering.
+		[Tooltip("the length of the raycast used to detect if we're colliding with a pushable object. Increase this if your animation is flickering.")]
 		public float DetectionRaycastLength = 0.2f;
-
+		/// the minimum horizontal speed below which we don't consider the character pushing anymore
+		[Tooltip("the minimum horizontal speed below which we don't consider the character pushing anymore")]
+		public float MinimumPushSpeed = 0.05f;
+        
 		protected bool _collidingWithPushable = false;
+		protected Vector3 _raycastDirection;
+		protected Vector3 _raycastOrigin;
+
+		// animation parameters
+		protected const string _pushingAnimationParameterName = "Pushing";
+		protected int _pushingAnimationParameter;
 
 		/// <summary>
 		/// On Start(), we initialize our various flags
@@ -40,7 +54,7 @@ namespace MoreMountains.CorgiEngine
 		{
 			base.ProcessAbility();
 
-			if (!CanPush || !AbilityPermitted)
+			if (!CanPush || !AbilityAuthorized)
 			{
 				return;
 			}
@@ -59,30 +73,47 @@ namespace MoreMountains.CorgiEngine
 			_collidingWithPushable = false;
 
 			// we cast a ray in front of us to see if we're colliding with a pushable object
-			Vector3 raycastDirection = _character.IsFacingRight ? Vector3.right : Vector3.left;
-			Vector3 raycastOrigin=transform.position + raycastDirection * (_controller.Width()/2 );
+			_raycastDirection = _character.IsFacingRight ? transform.right : -transform.right;
+			_raycastOrigin = _controller.ColliderCenterPosition + _raycastDirection * (_controller.Width()/2 );
 
 
 			// we cast our ray to see if we're hitting something
-			RaycastHit2D hit = MMDebug.RayCast (raycastOrigin,raycastDirection,DetectionRaycastLength,_controller.PlatformMask,Color.green,_controller.Parameters.DrawRaycastsGizmos);			
+			RaycastHit2D hit = MMDebug.RayCast (_raycastOrigin,_raycastDirection,DetectionRaycastLength,_controller.PlatformMask,Color.green,_controller.Parameters.DrawRaycastsGizmos);			
 			if (hit)
 			{
-				if (hit.collider.GetComponent<Pushable>() != null)
+				if (hit.collider.gameObject.MMGetComponentNoAlloc<Pushable>() != null)
 				{
 					_collidingWithPushable = true;
 				}
 			}
 
-			if (_collidingWithPushable && _controller.Speed.x !=0 && _movement.CurrentState != CharacterStates.MovementStates.Pushing)
+			if (_controller.State.IsGrounded 
+			    && _collidingWithPushable 
+			    && (Mathf.Abs(_controller.Speed.x) > MinimumPushSpeed) 
+			    && (_movement.CurrentState != CharacterStates.MovementStates.Pushing)
+			    && (_movement.CurrentState != CharacterStates.MovementStates.Jumping)
+			    && (_movement.CurrentState != CharacterStates.MovementStates.Crouching)
+			    && (_movement.CurrentState != CharacterStates.MovementStates.Crawling)
+			    && !_startFeedbackIsPlaying)
 			{
+				PlayAbilityStartFeedbacks ();
 				_movement.ChangeState (CharacterStates.MovementStates.Pushing);
 			}
 
 			if ((!_collidingWithPushable && _movement.CurrentState == CharacterStates.MovementStates.Pushing)
-				|| (_collidingWithPushable && _controller.Speed.x == 0 && _movement.CurrentState == CharacterStates.MovementStates.Pushing))
+			    || (_collidingWithPushable && Mathf.Abs(_controller.Speed.x) <= MinimumPushSpeed && _movement.CurrentState == CharacterStates.MovementStates.Pushing))
 			{
 				// we reset the state
 				_movement.ChangeState(CharacterStates.MovementStates.Idle);
+				StopStartFeedbacks();
+				PlayAbilityStopFeedbacks();
+
+			}
+
+			if ((_movement.CurrentState != CharacterStates.MovementStates.Pushing) && _startFeedbackIsPlaying) 
+			{
+				StopStartFeedbacks();
+				PlayAbilityStopFeedbacks();
 			}
 		}
 
@@ -91,7 +122,7 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected override void InitializeAnimatorParameters()
 		{
-			RegisterAnimatorParameter ("Pushing", AnimatorControllerParameterType.Bool);
+			RegisterAnimatorParameter (_pushingAnimationParameterName, AnimatorControllerParameterType.Bool, out _pushingAnimationParameter);
 		}
 
 		/// <summary>
@@ -99,7 +130,16 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		public override void UpdateAnimator()
 		{
-			MMAnimator.UpdateAnimatorBool(_animator,"Pushing",(_movement.CurrentState == CharacterStates.MovementStates.Pushing),_character._animatorParameters);
+			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _pushingAnimationParameter, (_movement.CurrentState == CharacterStates.MovementStates.Pushing), _character._animatorParameters, _character.PerformAnimatorSanityChecks);
+		}
+
+		/// <summary>
+		/// On reset ability, we cancel all the changes made
+		/// </summary>
+		public override void ResetAbility()
+		{
+			base.ResetAbility();
+			MMAnimatorExtensions.UpdateAnimatorBool(_animator, _pushingAnimationParameter, false, _character._animatorParameters, _character.PerformAnimatorSanityChecks);
 		}
 	}
 }

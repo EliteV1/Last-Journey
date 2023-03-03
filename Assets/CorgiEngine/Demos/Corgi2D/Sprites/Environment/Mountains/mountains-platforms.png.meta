@@ -203,18 +203,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 4096
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -754,31 +742,31 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      mountains-platforms_0: 21300000
-      mountains-platforms_1: 21300002
+      mountains-platforms_5: 21300064
+      mountains-platforms_7: 21300010
+      mountains-platforms_49: 21300048
+      mountains-platforms_61: 21300062
       mountains-platforms_14: 21300012
       mountains-platforms_15: 21300014
-      mountains-platforms_17: 21300016
-      mountains-platforms_18: 21300018
-      mountains-platforms_19: 21300020
-      mountains-platforms_2: 21300004
-      mountains-platforms_20: 21300022
-      mountains-platforms_3: 21300006
-      mountains-platforms_38: 21300036
-      mountains-platforms_39: 21300038
-      mountains-platforms_4: 21300066
-      mountains-platforms_41: 21300042
-      mountains-platforms_47: 21300044
-      mountains-platforms_48: 21300046
-      mountains-platforms_49: 21300048
-      mountains-platforms_5: 21300064
-      mountains-platforms_51: 21300052
       mountains-platforms_55: 21300054
       mountains-platforms_56: 21300056
+      mountains-platforms_1: 21300002
+      mountains-platforms_20: 21300022
       mountains-platforms_59: 21300058
+      mountains-platforms_17: 21300016
+      mountains-platforms_19: 21300020
+      mountains-platforms_47: 21300044
+      mountains-platforms_38: 21300036
+      mountains-platforms_2: 21300004
+      mountains-platforms_48: 21300046
       mountains-platforms_60: 21300060
-      mountains-platforms_61: 21300062
-      mountains-platforms_7: 21300010
+      mountains-platforms_0: 21300000
+      mountains-platforms_41: 21300042
+      mountains-platforms_18: 21300018
+      mountains-platforms_51: 21300052
+      mountains-platforms_3: 21300006
+      mountains-platforms_39: 21300038
+      mountains-platforms_4: 21300066
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

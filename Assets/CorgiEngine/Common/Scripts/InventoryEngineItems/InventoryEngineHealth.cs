@@ -14,28 +14,30 @@ namespace MoreMountains.CorgiEngine
 	public class InventoryEngineHealth : InventoryItem 
 	{
 		[Header("Health")]
-		[Information("Here you need specify the amount of health gained when using this item.",InformationAttribute.InformationType.Info,false)]
+		[MMInformation("Here you need specify the amount of health gained when using this item.",MMInformationAttribute.InformationType.Info,false)]
+
 		/// the amount of health to add to the player when the item is used
-		public int HealthBonus;
+		[Tooltip("the amount of health to add to the player when the item is used")]
+		public float HealthBonus;
 
 		/// <summary>
 		/// When the item is used, we try to grab our character's Health component, and if it exists, we add our health bonus amount of health
 		/// </summary>
-		public override void Use()
+		public override bool Use(string playerID)
 		{
-			base.Use();
+			base.Use(playerID);
 
-			if (TargetInventory.Owner == null)
+			if (TargetInventory(playerID).Owner == null)
 			{
-				return;
+				return false;
 			}
 
-			Health characterHealth = TargetInventory.Owner.GetComponent<Health>();
+			Health characterHealth = TargetInventory(playerID).Owner.GetComponent<Health>();
 			if (characterHealth != null)
 			{
-				characterHealth.GetHealth(HealthBonus,TargetInventory.gameObject);	
+				characterHealth.GetHealth(HealthBonus,TargetInventory(playerID).gameObject);	
 			}
+			return true;
 		}
-
 	}
 }

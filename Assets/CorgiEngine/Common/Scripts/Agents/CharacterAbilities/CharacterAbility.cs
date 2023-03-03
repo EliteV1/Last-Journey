@@ -1,30 +1,96 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using MoreMountains.Tools;
+using MoreMountains.Feedbacks;
 
 namespace MoreMountains.CorgiEngine
 {	
 	/// <summary>
 	/// A class meant to be overridden that handles a character's ability. 
 	/// </summary>
-	[RequireComponent(typeof(Character))]
-	public class CharacterAbility : MonoBehaviour 
+	/// 
+	public class CharacterAbility : CorgiMonoBehaviour 
 	{
-		/// the sound fx to play when the ability starts
-		public AudioClip AbilityStartSfx;
-		/// the sound fx to play while the ability is running
-		public AudioClip AbilityInProgressSfx;
-		/// the sound fx to play when the ability stops
-		public AudioClip AbilityStopSfx;
+		/// the feedbacks to play when the ability starts
+		[Tooltip("the feedbacks to play when the ability starts")]
+		public MMFeedbacks AbilityStartFeedbacks;
+		/// the feedbacks to play when the ability stops
+		[Tooltip("the feedbacks to play when the ability stops")]
+		public MMFeedbacks AbilityStopFeedbacks;
+        
+		[Header("Permissions")]
 
 		/// if true, this ability can perform as usual, if not, it'll be ignored. You can use this to unlock abilities over time for example
+		[Tooltip("if true, this ability can perform as usual, if not, it'll be ignored. You can use this to unlock abilities over time for example")]
 		public bool AbilityPermitted = true;
+		/// an array containing all the blocking movement states. If the Character is in one of these states and tries to trigger this ability, it won't be permitted. Useful to prevent this ability from being used while Idle or Swimming, for example.
+		[Tooltip("an array containing all the blocking movement states. If the Character is in one of these states and tries to trigger this ability, it won't be permitted. Useful to prevent this ability from being used while Idle or Swimming, for example.")]
+		public CharacterStates.MovementStates[] BlockingMovementStates;
+		/// an array containing all the blocking condition states. If the Character is in one of these states and tries to trigger this ability, it won't be permitted. Useful to prevent this ability from being used while dead, for example.
+		[Tooltip("an array containing all the blocking condition states. If the Character is in one of these states and tries to trigger this ability, it won't be permitted. Useful to prevent this ability from being used while dead, for example.")]
+		public CharacterStates.CharacterConditions[] BlockingConditionStates;
+		/// an array containing all the blocking weapon states. If one of the character's weapons is in one of these states and yet the character tries to trigger this ability, it won't be permitted. Useful to prevent this ability from being used while attacking, for example.
+		[Tooltip("an array containing all the blocking weapon states. If one of the character's weapons is in one of these states and yet the character tries to trigger this ability, it won't be permitted. Useful to prevent this ability from being used while attacking, for example.")]
+		public Weapon.WeaponStates[] BlockingWeaponStates;
 
+		public virtual bool AbilityAuthorized
+		{
+			get
+			{
+				if (_character != null)
+				{
+					if ((BlockingMovementStates != null) && (BlockingMovementStates.Length > 0))
+					{
+						for (int i = 0; i < BlockingMovementStates.Length; i++)
+						{
+							if (BlockingMovementStates[i] == (_character.MovementState.CurrentState))
+							{
+								return false;
+							}
+						}
+					}
+
+					if ((BlockingConditionStates != null) && (BlockingConditionStates.Length > 0))
+					{
+						for (int i = 0; i < BlockingConditionStates.Length; i++)
+						{
+							if (BlockingConditionStates[i] == _character.ConditionState.CurrentState)
+							{
+								return false;
+							}  
+						}
+					}
+
+					if ((BlockingWeaponStates != null) && (BlockingWeaponStates.Length > 0))
+					{
+						for (int i = 0; i < BlockingWeaponStates.Length; i++)
+						{
+							foreach (CharacterHandleWeapon handleWeapon in _handleWeaponList)
+							{
+								if (handleWeapon.CurrentWeapon != null)
+								{
+									if (BlockingWeaponStates[i] == (handleWeapon.CurrentWeapon.WeaponState.CurrentState))
+									{
+										return false;
+									}
+								}
+							}
+						}
+					}
+				}
+				return AbilityPermitted;
+			}
+		}
+		
+		/// true if the ability has already been initialized
 		public bool AbilityInitialized { get { return _abilityInitialized; } }
 
 		protected Character _character;
+		protected Transform _characterTransform;
 		protected Health _health;
-		protected CharacterHorizontalMovement _characterBasicMovement;
+		protected CharacterHorizontalMovement _characterHorizontalMovement;
 		protected CorgiController _controller;
 		protected InputManager _inputManager;
 		protected CameraController _sceneCamera;
@@ -33,8 +99,12 @@ namespace MoreMountains.CorgiEngine
 		protected SpriteRenderer _spriteRenderer;
 		protected MMStateMachine<CharacterStates.MovementStates> _movement;
 		protected MMStateMachine<CharacterStates.CharacterConditions> _condition;
-		protected AudioSource _abilityInProgressSfx;
 		protected bool _abilityInitialized = false;
+		protected CharacterGravity _characterGravity;
+		protected float _verticalInput;
+		protected float _horizontalInput;
+		protected bool _startFeedbackIsPlaying = false;
+		protected List<CharacterHandleWeapon> _handleWeaponList;
 
 		/// This method is only used to display a helpbox text at the beginning of the ability's inspector
 		public virtual string HelpBoxText() { return ""; }
@@ -52,18 +122,44 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void Initialization()
 		{
-			_character = GetComponent<Character>();
-			_controller = GetComponent<CorgiController>();
-			_characterBasicMovement = GetComponent<CharacterHorizontalMovement>();
-			_spriteRenderer = GetComponent<SpriteRenderer>();
-			_health = GetComponent<Health> ();
-			_animator = _character._animator;
-			_sceneCamera = _character.SceneCamera;
-			_inputManager = _character.LinkedInputManager;
-			_state = _character.CharacterState;
-			_movement = _character.MovementState;
-			_condition = _character.ConditionState;
+			_character = this.gameObject.GetComponentInParent<Character>();
+			_controller = this.gameObject.GetComponentInParent<CorgiController>();
+			_characterHorizontalMovement = _character?.FindAbility<CharacterHorizontalMovement>();
+			_characterGravity = _character?.FindAbility<CharacterGravity> ();
+			_spriteRenderer = this.gameObject.GetComponentInParent<SpriteRenderer>();
+			_health = this.gameObject.GetComponentInParent<Health> ();
+			_handleWeaponList = _character?.FindAbilities<CharacterHandleWeapon>();
+			BindAnimator();
+			if (_character != null)
+			{
+				_characterTransform = _character.transform;
+				_sceneCamera = _character.SceneCamera;
+				_inputManager = _character.LinkedInputManager;
+				_state = _character.CharacterState;
+				_movement = _character.MovementState;
+				_condition = _character.ConditionState;
+			}
 			_abilityInitialized = true;
+		}
+
+		/// <summary>
+		/// Sets a new input manager for this ability to get input from
+		/// </summary>
+		/// <param name="inputManager"></param>
+		public virtual void SetInputManager(InputManager inputManager)
+		{
+			_inputManager = inputManager;
+		}
+
+		/// <summary>
+		/// Binds the animator from the character and initializes the animator parameters
+		/// </summary>
+		public virtual void BindAnimator()
+		{
+			if (_character != null)
+			{
+				_animator = _character._animator;    
+			}
 			if (_animator != null)
 			{
 				InitializeAnimatorParameters();
@@ -83,7 +179,25 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void InternalHandleInput()
 		{
-			if (_inputManager==null) { return; }
+			if (_inputManager == null) { return; }
+
+			_verticalInput = _inputManager.PrimaryMovement.y;
+			_horizontalInput = _inputManager.PrimaryMovement.x;
+
+			if (_characterGravity != null)
+			{
+				if (_characterGravity.ShouldReverseInput())
+				{
+					if (_characterGravity.ReverseVerticalInputWhenUpsideDown)
+					{
+						_verticalInput = -_verticalInput;
+					}
+					if (_characterGravity.ReverseHorizontalInputWhenUpsideDown)
+					{
+						_horizontalInput = -_horizontalInput;
+					}	
+				}
+			}
 			HandleInput();
 		}
 
@@ -93,6 +207,15 @@ namespace MoreMountains.CorgiEngine
 		protected virtual void HandleInput()
 		{
 
+		}
+
+		/// <summary>
+		/// Resets all input for this ability. Can be overridden for ability specific directives
+		/// </summary>
+		public virtual void ResetInput()
+		{
+			_horizontalInput = 0f;
+			_verticalInput = 0f;
 		}
 
 		/// <summary>
@@ -147,7 +270,7 @@ namespace MoreMountains.CorgiEngine
 		/// <summary>
 		/// Override this to reset this ability's parameters. It'll be automatically called when the character gets killed, in anticipation for its respawn.
 		/// </summary>
-		public virtual void Reset()
+		public virtual void ResetAbility()
 		{
 			
 		}
@@ -155,61 +278,47 @@ namespace MoreMountains.CorgiEngine
 		/// <summary>
 		/// Plays the ability start sound effect
 		/// </summary>
-		protected virtual void PlayAbilityStartSfx()
+		protected virtual void PlayAbilityStartFeedbacks()
 		{
-			if (AbilityStartSfx!=null) 
-			{	
-				SoundManager.Instance.PlaySound(AbilityStartSfx,transform.position);	
-			}
+			AbilityStartFeedbacks?.PlayFeedbacks(this.transform.position);
+			_startFeedbackIsPlaying = true;
 		}	
-
-		/// <summary>
-		/// Plays the ability used sound effect
-		/// </summary>
-		protected virtual void PlayAbilityUsedSfx()
-		{
-			if (AbilityInProgressSfx!=null) 
-			{	
-				if (_abilityInProgressSfx == null)
-				{
-					_abilityInProgressSfx = SoundManager.Instance.PlaySound(AbilityInProgressSfx, transform.position, true);	
-				}
-			}
-		}	
-
+        
 		/// <summary>
 		/// Stops the ability used sound effect
 		/// </summary>
-		protected virtual void StopAbilityUsedSfx()
+		public virtual void StopStartFeedbacks()
 		{
-			if (AbilityInProgressSfx!=null) 
-			{	
-				SoundManager.Instance.StopLoopingSound(_abilityInProgressSfx);	
-				_abilityInProgressSfx = null;
-			}
+			AbilityStartFeedbacks?.StopFeedbacks();
+			_startFeedbackIsPlaying = false;
 		}	
+
 
 		/// <summary>
 		/// Plays the ability stop sound effect
 		/// </summary>
-		protected virtual void PlayAbilityStopSfx()
+		protected virtual void PlayAbilityStopFeedbacks()
 		{
-			if (AbilityStopSfx!=null) 
-			{	
-				SoundManager.Instance.PlaySound(AbilityStopSfx,transform.position);	
-			}
+			AbilityStopFeedbacks?.PlayFeedbacks();
 		}
+        
 
 		/// <summary>
 		/// Registers a new animator parameter to the list
 		/// </summary>
 		/// <param name="parameterName">Parameter name.</param>
 		/// <param name="parameterType">Parameter type.</param>
-		protected virtual void RegisterAnimatorParameter(string parameterName, AnimatorControllerParameterType parameterType)
+		public virtual void RegisterAnimatorParameter(string parameterName, AnimatorControllerParameterType parameterType, out int parameter)
 		{
-			if (_animator.HasParameterOfType(parameterName, parameterType))
+			parameter = Animator.StringToHash(parameterName);
+
+			if (_animator == null) 
 			{
-				_character._animatorParameters.Add(parameterName);
+				return;
+			}
+			if (_animator.MMHasParameterOfType(parameterName, parameterType))
+			{
+				_character._animatorParameters.Add(parameter);
 			}
 		}
 
@@ -225,7 +334,15 @@ namespace MoreMountains.CorgiEngine
 		/// </summary>
 		protected virtual void OnDeath()
 		{
-			StopAbilityUsedSfx ();
+			StopStartFeedbacks ();
+		}
+
+		/// <summary>
+		/// Override this to describe what should happen to this ability when the character takes a hit
+		/// </summary>
+		protected virtual void OnHit()
+		{
+
 		}
 
 		/// <summary>
@@ -235,13 +352,14 @@ namespace MoreMountains.CorgiEngine
 		{
 			if (_health == null)
 			{
-				_health = GetComponent<Health> ();
+				_health = this.gameObject.GetComponentInParent<Health> ();
 			}
 
 			if (_health != null)
 			{
 				_health.OnRevive += OnRespawn;
 				_health.OnDeath += OnDeath;
+				_health.OnHit += OnHit;
 			}
 		}
 
@@ -254,6 +372,7 @@ namespace MoreMountains.CorgiEngine
 			{
 				_health.OnRevive -= OnRespawn;
 				_health.OnDeath -= OnDeath;
+				_health.OnHit -= OnHit;
 			}			
 		}
 	}

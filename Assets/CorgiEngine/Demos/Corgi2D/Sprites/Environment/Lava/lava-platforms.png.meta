@@ -560,22 +560,22 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       lava-platforms_0: 21300000
-      lava-platforms_1: 21300002
-      lava-platforms_10: 21300020
-      lava-platforms_11: 21300022
-      lava-platforms_12: 21300024
-      lava-platforms_13: 21300026
-      lava-platforms_14: 21300028
-      lava-platforms_15: 21300030
-      lava-platforms_16: 21300032
-      lava-platforms_2: 21300004
-      lava-platforms_3: 21300006
-      lava-platforms_4: 21300008
-      lava-platforms_5: 21300010
-      lava-platforms_6: 21300012
-      lava-platforms_7: 21300014
-      lava-platforms_8: 21300016
       lava-platforms_9: 21300018
+      lava-platforms_12: 21300024
+      lava-platforms_7: 21300014
+      lava-platforms_6: 21300012
+      lava-platforms_5: 21300010
+      lava-platforms_13: 21300026
+      lava-platforms_1: 21300002
+      lava-platforms_8: 21300016
+      lava-platforms_14: 21300028
+      lava-platforms_11: 21300022
+      lava-platforms_10: 21300020
+      lava-platforms_2: 21300004
+      lava-platforms_4: 21300008
+      lava-platforms_3: 21300006
+      lava-platforms_16: 21300032
+      lava-platforms_15: 21300030
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -6,21 +6,26 @@ namespace MoreMountains.CorgiEngine
 	/// <summary>
 	/// A component to add on level maps path points
 	/// </summary>
-	public class LevelMapPathElement : MonoBehaviour 
+	public class LevelMapPathElement : CorgiMonoBehaviour 
 	{
 		/// should the character automatically move to the next point when reaching this one
+		[Tooltip("should the character automatically move to the next point when reaching this one")]
 		public bool AutomaticMovement=false;
 
 		[Header("Possible Directions")]
+
 		/// the path element the character should go to when going up
+		[Tooltip("the path element the character should go to when going up")]
 		public LevelMapPathElement Up;
 		/// the path element the character should go to when going right
+		[Tooltip("the path element the character should go to when going right")]
 		public LevelMapPathElement Right;
 		/// the path element the character should go to when going down
+		[Tooltip("the path element the character should go to when going down")]
 		public LevelMapPathElement Down;
 		/// the path element the character should go to when going left
+		[Tooltip("the path element the character should go to when going left")]
 		public LevelMapPathElement Left;
-
 
 		/// <summary>
 		/// Determines whether this instance can go up.

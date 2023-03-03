@@ -221,18 +221,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -1087,46 +1075,46 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      robot_0: 21300000
-      robot_1: 21300002
-      robot_10: 21300020
-      robot_11: 21300022
-      robot_12: 21300024
-      robot_13: 21300026
-      robot_14: 21300028
-      robot_15: 21300030
-      robot_16: 21300032
-      robot_17: 21300034
-      robot_18: 21300036
-      robot_19: 21300038
-      robot_2: 21300004
-      robot_20: 21300040
-      robot_21: 21300042
-      robot_22: 21300044
-      robot_23: 21300046
-      robot_24: 21300048
-      robot_25: 21300050
       robot_26: 21300052
+      robot_32: 21300064
+      robot_2: 21300004
+      robot_1: 21300002
+      robot_19: 21300038
+      robot_13: 21300026
+      robot_24: 21300048
       robot_27: 21300054
-      robot_28: 21300056
+      robot_15: 21300030
+      robot_34: 21300068
+      robot_7: 21300014
       robot_29: 21300058
+      robot_10: 21300020
+      robot_18: 21300036
+      robot_9: 21300018
+      robot_36: 21300072
+      robot_8: 21300016
+      robot_23: 21300046
+      robot_20: 21300040
+      robot_16: 21300032
+      robot_37: 21300074
+      robot_4: 21300008
+      robot_14: 21300028
+      robot_12: 21300024
+      robot_17: 21300034
       robot_3: 21300006
       robot_30: 21300060
-      robot_31: 21300062
-      robot_32: 21300064
       robot_33: 21300066
-      robot_34: 21300068
-      robot_35: 21300070
-      robot_36: 21300072
-      robot_37: 21300074
+      robot_11: 21300022
+      robot_0: 21300000
       robot_38: 21300076
-      robot_39: 21300078
-      robot_4: 21300008
+      robot_25: 21300050
       robot_5: 21300010
+      robot_21: 21300042
+      robot_28: 21300056
+      robot_31: 21300062
+      robot_22: 21300044
+      robot_39: 21300078
       robot_6: 21300012
-      robot_7: 21300014
-      robot_8: 21300016
-      robot_9: 21300018
+      robot_35: 21300070
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

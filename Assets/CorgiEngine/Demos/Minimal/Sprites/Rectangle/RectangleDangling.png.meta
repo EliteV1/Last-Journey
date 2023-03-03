@@ -146,18 +146,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -487,21 +475,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RectangleDangling_0: 21300000
-      RectangleDangling_1: 21300002
-      RectangleDangling_10: 21300020
-      RectangleDangling_11: 21300022
       RectangleDangling_12: 21300024
       RectangleDangling_13: 21300026
-      RectangleDangling_14: 21300028
-      RectangleDangling_2: 21300004
-      RectangleDangling_3: 21300006
-      RectangleDangling_4: 21300008
-      RectangleDangling_5: 21300010
       RectangleDangling_6: 21300012
-      RectangleDangling_7: 21300014
-      RectangleDangling_8: 21300016
       RectangleDangling_9: 21300018
+      RectangleDangling_1: 21300002
+      RectangleDangling_8: 21300016
+      RectangleDangling_0: 21300000
+      RectangleDangling_4: 21300008
+      RectangleDangling_7: 21300014
+      RectangleDangling_14: 21300028
+      RectangleDangling_3: 21300006
+      RectangleDangling_11: 21300022
+      RectangleDangling_5: 21300010
+      RectangleDangling_2: 21300004
+      RectangleDangling_10: 21300020
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

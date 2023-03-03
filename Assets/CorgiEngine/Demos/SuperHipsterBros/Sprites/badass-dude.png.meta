@@ -247,9 +247,9 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      badass-dude_0: 21300000
-      badass-dude_1: 21300002
       badass-dude_2: 21300004
+      badass-dude_1: 21300002
+      badass-dude_0: 21300000
       badass-dude_3: 21300006
   spritePackingTag: 
   pSDRemoveMatte: 0

@@ -523,22 +523,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      AchievementIcons_10: 21300020
-      AchievementIcons_11: 21300022
-      AchievementIcons_12: 21300024
-      AchievementIcons_13: 21300026
-      AchievementIcons_14: 21300028
-      AchievementIcons_15: 21300030
-      AchievementIcons_6: 21300012
-      AchievementIcons_7: 21300014
-      AchievementIcons_8: 21300016
-      AchievementIcons_9: 21300018
-      AchievementIcons_Castle: 21300004
-      AchievementIcons_Jump: 21300000
-      AchievementIcons_Locked: 21300010
-      AchievementIcons_Money: 21300002
-      AchievementIcons_SkullAndBones: 21300008
       AchievementIcons_Syringe: 21300006
+      AchievementIcons_Money: 21300002
+      AchievementIcons_15: 21300030
+      AchievementIcons_11: 21300022
+      AchievementIcons_Castle: 21300004
+      AchievementIcons_7: 21300014
+      AchievementIcons_9: 21300018
+      AchievementIcons_13: 21300026
+      AchievementIcons_Jump: 21300000
+      AchievementIcons_10: 21300020
+      AchievementIcons_12: 21300024
+      AchievementIcons_SkullAndBones: 21300008
+      AchievementIcons_Locked: 21300010
+      AchievementIcons_14: 21300028
+      AchievementIcons_8: 21300016
+      AchievementIcons_6: 21300012
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

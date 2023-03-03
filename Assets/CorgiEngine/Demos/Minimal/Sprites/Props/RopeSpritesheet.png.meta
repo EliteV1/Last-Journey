@@ -281,18 +281,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 8192
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -1567,66 +1555,66 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      RopeSpritesheet_0: 21300000
-      RopeSpritesheet_1: 21300002
-      RopeSpritesheet_10: 21300020
-      RopeSpritesheet_11: 21300022
-      RopeSpritesheet_12: 21300024
-      RopeSpritesheet_13: 21300026
-      RopeSpritesheet_14: 21300028
-      RopeSpritesheet_15: 21300030
-      RopeSpritesheet_16: 21300032
-      RopeSpritesheet_17: 21300034
-      RopeSpritesheet_18: 21300036
-      RopeSpritesheet_19: 21300038
-      RopeSpritesheet_2: 21300004
-      RopeSpritesheet_20: 21300040
-      RopeSpritesheet_21: 21300042
-      RopeSpritesheet_22: 21300044
-      RopeSpritesheet_23: 21300046
-      RopeSpritesheet_24: 21300048
-      RopeSpritesheet_25: 21300050
-      RopeSpritesheet_26: 21300052
-      RopeSpritesheet_27: 21300054
-      RopeSpritesheet_28: 21300056
-      RopeSpritesheet_29: 21300058
-      RopeSpritesheet_3: 21300006
-      RopeSpritesheet_30: 21300060
-      RopeSpritesheet_31: 21300062
-      RopeSpritesheet_32: 21300064
       RopeSpritesheet_33: 21300066
-      RopeSpritesheet_34: 21300068
-      RopeSpritesheet_35: 21300070
-      RopeSpritesheet_36: 21300072
-      RopeSpritesheet_37: 21300074
-      RopeSpritesheet_38: 21300076
-      RopeSpritesheet_39: 21300078
-      RopeSpritesheet_4: 21300008
-      RopeSpritesheet_40: 21300080
       RopeSpritesheet_41: 21300082
+      RopeSpritesheet_29: 21300058
+      RopeSpritesheet_9: 21300018
+      RopeSpritesheet_1: 21300002
+      RopeSpritesheet_18: 21300036
+      RopeSpritesheet_57: 21300114
+      RopeSpritesheet_13: 21300026
+      RopeSpritesheet_2: 21300004
+      RopeSpritesheet_30: 21300060
+      RopeSpritesheet_7: 21300014
+      RopeSpritesheet_0: 21300000
+      RopeSpritesheet_5: 21300010
+      RopeSpritesheet_54: 21300108
+      RopeSpritesheet_59: 21300118
+      RopeSpritesheet_37: 21300074
+      RopeSpritesheet_4: 21300008
+      RopeSpritesheet_27: 21300054
+      RopeSpritesheet_40: 21300080
+      RopeSpritesheet_32: 21300064
+      RopeSpritesheet_31: 21300062
+      RopeSpritesheet_20: 21300040
+      RopeSpritesheet_39: 21300078
+      RopeSpritesheet_3: 21300006
+      RopeSpritesheet_25: 21300050
+      RopeSpritesheet_47: 21300094
+      RopeSpritesheet_45: 21300090
+      RopeSpritesheet_26: 21300052
+      RopeSpritesheet_16: 21300032
       RopeSpritesheet_42: 21300084
       RopeSpritesheet_43: 21300086
-      RopeSpritesheet_44: 21300088
-      RopeSpritesheet_45: 21300090
-      RopeSpritesheet_46: 21300092
-      RopeSpritesheet_47: 21300094
-      RopeSpritesheet_48: 21300096
+      RopeSpritesheet_23: 21300046
+      RopeSpritesheet_22: 21300044
+      RopeSpritesheet_38: 21300076
       RopeSpritesheet_49: 21300098
-      RopeSpritesheet_5: 21300010
-      RopeSpritesheet_50: 21300100
-      RopeSpritesheet_51: 21300102
-      RopeSpritesheet_52: 21300104
-      RopeSpritesheet_53: 21300106
-      RopeSpritesheet_54: 21300108
+      RopeSpritesheet_44: 21300088
+      RopeSpritesheet_34: 21300068
+      RopeSpritesheet_24: 21300048
+      RopeSpritesheet_11: 21300022
+      RopeSpritesheet_28: 21300056
+      RopeSpritesheet_17: 21300034
+      RopeSpritesheet_19: 21300038
       RopeSpritesheet_55: 21300110
-      RopeSpritesheet_56: 21300112
-      RopeSpritesheet_57: 21300114
+      RopeSpritesheet_21: 21300042
+      RopeSpritesheet_50: 21300100
+      RopeSpritesheet_48: 21300096
+      RopeSpritesheet_53: 21300106
       RopeSpritesheet_58: 21300116
-      RopeSpritesheet_59: 21300118
       RopeSpritesheet_6: 21300012
-      RopeSpritesheet_7: 21300014
+      RopeSpritesheet_12: 21300024
+      RopeSpritesheet_35: 21300070
+      RopeSpritesheet_46: 21300092
+      RopeSpritesheet_52: 21300104
+      RopeSpritesheet_51: 21300102
+      RopeSpritesheet_14: 21300028
+      RopeSpritesheet_56: 21300112
+      RopeSpritesheet_15: 21300030
       RopeSpritesheet_8: 21300016
-      RopeSpritesheet_9: 21300018
+      RopeSpritesheet_10: 21300020
+      RopeSpritesheet_36: 21300072
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -191,18 +191,6 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
-    buildTarget: Android
-    maxTextureSize: 4096
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -847,36 +835,36 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      blob-walk_0: 21300000
-      blob-walk_1: 21300002
-      blob-walk_10: 21300020
-      blob-walk_11: 21300022
-      blob-walk_12: 21300024
-      blob-walk_13: 21300026
-      blob-walk_14: 21300028
       blob-walk_15: 21300030
-      blob-walk_16: 21300032
-      blob-walk_17: 21300034
-      blob-walk_18: 21300036
-      blob-walk_19: 21300038
+      blob-walk_14: 21300028
       blob-walk_2: 21300004
-      blob-walk_20: 21300040
-      blob-walk_21: 21300042
-      blob-walk_22: 21300044
-      blob-walk_23: 21300046
-      blob-walk_24: 21300048
-      blob-walk_25: 21300050
-      blob-walk_26: 21300052
-      blob-walk_27: 21300054
-      blob-walk_28: 21300056
-      blob-walk_29: 21300058
-      blob-walk_3: 21300006
       blob-walk_4: 21300008
-      blob-walk_5: 21300010
+      blob-walk_0: 21300000
+      blob-walk_20: 21300040
+      blob-walk_3: 21300006
+      blob-walk_25: 21300050
+      blob-walk_22: 21300044
+      blob-walk_17: 21300034
+      blob-walk_21: 21300042
+      blob-walk_28: 21300056
       blob-walk_6: 21300012
-      blob-walk_7: 21300014
+      blob-walk_11: 21300022
+      blob-walk_26: 21300052
       blob-walk_8: 21300016
+      blob-walk_23: 21300046
+      blob-walk_29: 21300058
+      blob-walk_12: 21300024
+      blob-walk_27: 21300054
+      blob-walk_18: 21300036
       blob-walk_9: 21300018
+      blob-walk_13: 21300026
+      blob-walk_16: 21300032
+      blob-walk_24: 21300048
+      blob-walk_7: 21300014
+      blob-walk_5: 21300010
+      blob-walk_1: 21300002
+      blob-walk_19: 21300038
+      blob-walk_10: 21300020
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
