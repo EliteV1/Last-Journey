@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 114000013246403734}
   - component: {fileID: 114000011349290588}
   - component: {fileID: 114000010485663210}
-  - component: {fileID: -5081384972696292151}
   m_Layer: 9
   m_Name: Charapter
   m_TagString: Player
@@ -38,7 +37,7 @@ Transform:
   m_GameObject: {fileID: 162546}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -13.577355, y: -3.2733717, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: -0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -181,7 +180,11 @@ MonoBehaviour:
     AscentMultiplier: 1
     MaxVelocity: {x: 100, y: 100}
     SpeedAccelerationOnGround: 20
+    UseSeparateDecelerationOnGround: 0
+    SpeedDecelerationOnGround: 20
     SpeedAccelerationInAir: 5
+    UseSeparateDecelerationInAir: 0
+    SpeedDecelerationInAir: 5
     SpeedFactor: 1
     MaximumSlopeAngle: 45
     SlopeAngleSpeedFactor:
@@ -220,6 +223,7 @@ MonoBehaviour:
     Physics2DInteraction: 1
     Physics2DPushForce: 2
     DrawRaycastsGizmos: 1
+    DisplayWarnings: 1
   PlatformMask:
     serializedVersion: 2
     m_Bits: 1313024
@@ -232,12 +236,32 @@ MonoBehaviour:
   MovingOneWayPlatformMask:
     serializedVersion: 2
     m_Bits: 1048576
+  MidHeightOneWayPlatformMask:
+    serializedVersion: 2
+    m_Bits: 67108864
+  StairsMask:
+    serializedVersion: 2
+    m_Bits: 268435456
   DetachmentMethod: 0
+  SafeSetTransform: 0
+  AutomaticallySetPhysicsSettings: 0
+  StandingOn: {fileID: 0}
+  UpdateMode: 0
   NumberOfHorizontalRays: 4
   NumberOfVerticalRays: 4
-  RayOffset: 0.05
-  StickWhenWalkingDownSlopes: 0
+  RayOffsetHorizontal: 0.05
+  RayOffsetVertical: 0.05
+  CrouchedRaycastLengthMultiplier: 1
+  CastRaysOnBothSides: 0
+  DistanceToTheGroundRayMaximumLength: 100
+  PerformSafetyBoxcast: 0
+  OnMovingPlatformRaycastLengthMultiplier: 2
+  ObstacleHeightTolerance: 0.05
+  StickToSlopes: 0
   StickyRaycastLength: 0
+  StickToSlopesOffsetY: 0.2
+  TimeAirborne: 0
+  AutomaticGravitySettings: 1
 --- !u!114 &11401136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,11 +280,23 @@ MonoBehaviour:
   DirectionOnSpawn: 0
   CharacterAnimator: {fileID: 9573142}
   UseDefaultMecanim: 1
+  PerformAnimatorSanityChecks: 1
+  DisableAnimatorLogs: 0
   CharacterModel: {fileID: 0}
-  FlipOnDirectionChange: 1
-  FlipValue: {x: 1, y: 1, z: -1}
+  CameraTarget: {fileID: 0}
+  CameraTargetSpeed: 5
+  AdditionalAbilityNodes: []
+  FlipModelOnDirectionChange: 1
+  ModelFlipValue: {x: -1, y: 1, z: 1}
+  RotateModelOnDirectionChange: 0
+  ModelRotationValue: {x: 0, y: 180, z: 0}
+  ModelRotationSpeed: 0
+  CharacterHealth: {fileID: 0}
   SendStateChangeEvents: 1
   SendStateUpdateEvents: 1
+  AirborneDistance: 0.5
+  AirborneMinimumTime: 0.1
+  CharacterBrain: {fileID: 0}
 --- !u!114 &11464194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,6 +313,7 @@ MonoBehaviour:
   Bottom: 2
   Left: 0
   Right: 0
+  ResetForcesOnConstrain: 1
 --- !u!114 &114000013935188158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,13 +326,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e24d0eb5fa7640038713564930581a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AbilityStartSfx: {fileID: 0}
-  AbilityInProgressSfx: {fileID: 0}
-  AbilityStopSfx: {fileID: 0}
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  BlockingWeaponStates: 
   WalkSpeed: 6
-  TouchTheGroundEffect: {fileID: 0}
-  TouchTheGroundSfx: {fileID: 0}
+  MovementSpeedMultiplier: 1
+  AbilityMovementSpeedMultiplier: 1
+  PushSpeedMultiplier: 1
+  StateSpeedMultiplier: 1
+  FlipCharacterToFaceDirection: 1
+  ReadInput: 1
+  InstantAcceleration: 0
+  InputThreshold: 0.1
+  AirControl: 1
+  AllowFlipInTheAir: 1
+  ActiveAfterDeath: 0
+  TouchTheGroundFeedback: {fileID: 0}
+  MinimumAirTimeBeforeFeedback: 0.2
+  StopWalkingWhenCollidingWithAWall: 0
 --- !u!114 &114000012610865742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -308,18 +359,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c1a8bab4d234998bcbc559bb58fa11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AbilityStartSfx: {fileID: 0}
-  AbilityInProgressSfx: {fileID: 0}
-  AbilityStopSfx: {fileID: 0}
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
-  JumpHeight: 3.025
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  BlockingWeaponStates: 
   NumberOfJumps: 3
+  JumpHeight: 3.025
   JumpRestrictions: 1
-  JumpTimeWindow: 0
+  ResetCameraOffsetOnJump: 0
+  CanJumpDownOneWayPlatforms: 1
   JumpIsProportionalToThePressTime: 1
   JumpMinimumAirTime: 0.1
+  JumpReleaseForceFactor: 2
+  CoyoteTime: 0
+  InputBufferDuration: 0
   OneWayPlatformsJumpCollisionOffDuration: 0.3
   MovingPlatformsJumpCollisionOffDuration: 0.05
+  AirJumpFeedbacks: {fileID: 0}
+  DoubleJumpFeedbacks: {fileID: 0}
+  NumberOfJumpsLeft: 0
 --- !u!114 &114000013246403734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332,10 +392,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46406e788b52547b6b352456466eb58b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AbilityStartSfx: {fileID: 0}
-  AbilityInProgressSfx: {fileID: 0}
-  AbilityStopSfx: {fileID: 0}
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  BlockingWeaponStates: 
+  PreventJumpWhenInZone: 1
+  ActivationCooldownDuration: 0
 --- !u!114 &114000011349290588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,10 +412,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f59e06702d6be45948936bd909420d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AbilityStartSfx: {fileID: 0}
-  AbilityInProgressSfx: {fileID: 0}
-  AbilityStopSfx: {fileID: 0}
+  AbilityStartFeedbacks: {fileID: 0}
+  AbilityStopFeedbacks: {fileID: 0}
   AbilityPermitted: 1
+  BlockingMovementStates: 
+  BlockingConditionStates: 
+  BlockingWeaponStates: 
+  MuteSfxTrackSounds: 1
+  MuteUITrackSounds: 0
+  MuteMusicTrackSounds: 0
+  MuteMasterTrackSounds: 0
+  OnPause:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnpause:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &114000010485663210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,27 +441,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentHealth: 0
-  Invulnerable: 0
+  TemporarilyInvulnerable: 0
+  PostDamageInvulnerable: 0
   InitialHealth: 100
   MaximumHealth: 100
-  DamageEffect: {fileID: 100000, guid: 65c210b4af5c9d544814a1bb717df020, type: 3}
-  DamageSfx: {fileID: 8300000, guid: 4709e6d9e03392b4a9d72a8bc19efb69, type: 3}
+  Invulnerable: 0
+  ImmuneToDamage: 0
+  DamageFeedbacks: {fileID: 0}
+  FeedbackIsProportionalToDamage: 0
   FlickerSpriteOnHit: 1
-  DeathEffect: {fileID: 0}
+  FlickerColor: {r: 1, g: 0.078431375, b: 0.078431375, a: 1}
+  ImmuneToKnockback: 0
+  ImmuneToKnockbackIfZeroDamage: 0
+  DeathFeedbacks: {fileID: 0}
+  DestroyOnDeath: 1
+  DelayBeforeDestruction: 0
   CollisionsOffOnDeath: 1
-  DeathForce: {x: 0, y: 10}
+  GravityOffOnDeath: 0
   PointsWhenDestroyed: 0
-  VibrateOnDeath: 1
   RespawnAtInitialLocation: 0
---- !u!114 &-5081384972696292151
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162546}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 774e988ec33322d42bf2d83413a32f09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  ApplyDeathForce: 1
+  DeathForce: {x: 0, y: 10}
+  ResetForcesOnDeath: 0
+  ResetColorOnRevive: 1
+  ColorMaterialPropertyName: _Color
+  UseMaterialPropertyBlocks: 0
+  MasterHealth: {fileID: 0}
+  TargetDamageResistanceProcessor: {fileID: 0}

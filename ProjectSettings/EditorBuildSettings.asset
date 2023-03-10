@@ -219,6 +219,9 @@ EditorBuildSettings:
     path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMSceneLoading/LoadingScreens/MMAdditiveLoadingScreenBigText.unity
     guid: dedb2bed56a01c241be42c5c5b5748ca
   - enabled: 1
+    path: Assets/Scenes/FirstLevel.unity
+    guid: 77bb1e807f090ad49a6e3cc9dba6273f
+  - enabled: 1
     path: Assets/CorgiEngine/ThirdParty/MoreMountains/MMTools/Tools/MMSceneLoading/LoadingScreens/MMAdditiveLoadingScreenFastFade.unity
     guid: 8101c376367d6e44f84e602722e5ac10
   - enabled: 1
