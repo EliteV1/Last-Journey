@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -49,13 +50,13 @@ MonoBehaviour:
     UnlockedSound: {fileID: 0}
     ProgressTarget: 3
     ProgressCurrent: 0
-  - AchievementID: DeathIsOnlyTheBeginning
+  - AchievementID: Really?
     AchievementType: 0
     HiddenAchievement: 0
     UnlockedStatus: 0
-    Title: Death is only the Beginning
-    Description: Die for the first time
-    Points: 30
+    Title: Really?
+    Description: Muere de forma triste
+    Points: 5
     LockedImage: {fileID: 21300010, guid: fa6d364a5a0575245859952062aea14b, type: 3}
     UnlockedImage: {fileID: 21300008, guid: fa6d364a5a0575245859952062aea14b, type: 3}
     UnlockedSound: {fileID: 0}
@@ -68,6 +69,18 @@ MonoBehaviour:
     Title: Medic !
     Description: Grab a health bonus
     Points: 25
+    LockedImage: {fileID: 21300010, guid: fa6d364a5a0575245859952062aea14b, type: 3}
+    UnlockedImage: {fileID: 21300006, guid: fa6d364a5a0575245859952062aea14b, type: 3}
+    UnlockedSound: {fileID: 0}
+    ProgressTarget: 0
+    ProgressCurrent: 0
+  - AchievementID: LikeMegaman
+    AchievementType: 0
+    HiddenAchievement: 0
+    UnlockedStatus: 0
+    Title: Como megaman
+    Description: Salta desde una pared
+    Points: 5
     LockedImage: {fileID: 21300010, guid: fa6d364a5a0575245859952062aea14b, type: 3}
     UnlockedImage: {fileID: 21300006, guid: fa6d364a5a0575245859952062aea14b, type: 3}
     UnlockedSound: {fileID: 0}

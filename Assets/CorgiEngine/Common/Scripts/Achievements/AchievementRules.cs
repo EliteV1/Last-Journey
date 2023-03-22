@@ -38,6 +38,17 @@ namespace MoreMountains.CorgiEngine
 						MMAchievementManager.AddProgress ("JumpAround", 1);
 						break;
 				}	
+
+			}
+
+			if (characterEvent.TargetCharacter.CharacterType == Character.CharacterTypes.Player)
+			{
+				switch (characterEvent.EventType)
+				{
+					case MMCharacterEventTypes.WallJump:
+						MMAchievementManager.UnlockAchievement("LikeMegaman");
+						break;
+				}
 			}
 		}
 
@@ -49,7 +60,10 @@ namespace MoreMountains.CorgiEngine
 					MMAchievementManager.UnlockAchievement ("PrincessInAnotherCastle");
 					break;
 				case CorgiEngineEventTypes.PlayerDeath:
-					MMAchievementManager.UnlockAchievement ("DeathIsOnlyTheBeginning");
+					MMAchievementManager.UnlockAchievement ("Really?");
+					break;
+				case CorgiEngineEventTypes.Respawn:
+					MMAchievementManager.UnlockAchievement("NewLife");
 					break;
 			}
 		}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
 using MoreMountains.CorgiEngine;
-
+[AddComponentMenu("Corgi Engine/Items/Gem")]
 public class Gem : PickableItem
 {
 
