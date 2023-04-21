@@ -15,23 +15,10 @@ public class Gem : PickableItem
     [SerializeField]
     public int valor_gema;
     
-    
-    
-    
+
     [SerializeField] private GemCounter puntaje;
     
-
-
-
-
-    private void Start()
-    {
-        
-        
-       
-     
-
-    }                   
+                     
     private void Update()
     {
        
@@ -45,19 +32,17 @@ public class Gem : PickableItem
         //contador_gemas = contador_gemas +1 ;
         // anim.SetInteger("gemC", contador_gemas);
 
-
-
-
-
         //contador_gemas += valor_gema;
-
-
-
-
-
-
-
     }
 
-    
+    public void Ocultar()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Mostrar()
+    {
+        gameObject.SetActive(true);
+    }
+
 }

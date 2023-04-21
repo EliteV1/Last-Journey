@@ -7,7 +7,7 @@ public class FuelCounter : MonoBehaviour
 {
 
 
-    public static int scoreValue = 0;
+    public static int scoreValueF = 0;
 
     TextMeshProUGUI textMesh;
 
@@ -20,7 +20,7 @@ public class FuelCounter : MonoBehaviour
 
     private void Update()
     {
-        textMesh.text = scoreValue + "/3:";
+        textMesh.text = scoreValueF + "/3:";
 
     }
 

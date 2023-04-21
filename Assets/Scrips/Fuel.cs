@@ -40,7 +40,7 @@ public class Fuel : PickableItem
         //congemitas += 1;
 
        
-        FuelCounter.scoreValue += valor_fuel;
+        FuelCounter.scoreValueF += valor_fuel;
         //contador_gemas = contador_gemas +1 ;
         // anim.SetInteger("gemC", contador_gemas);
 

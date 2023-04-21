@@ -145,4 +145,4 @@ MonoBehaviour:
   TargetObjectDisableDelay: 1
   fuelCounter: {fileID: 0}
   valor_fuel: 1
-  fuel: {fileID: 0}
+  fuel: {fileID: 7543427371341704234, guid: 33605a0363365ce478787380bbe1b900, type: 3}

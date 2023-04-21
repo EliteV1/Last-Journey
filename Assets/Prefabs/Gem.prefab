@@ -166,9 +166,8 @@ MonoBehaviour:
   TargetObjectToDisable: {fileID: 0}
   TargetObjectDisableDelay: 1
   gemCounter: {fileID: 0}
-  fuelCounter: {fileID: 0}
   valor_gema: 2
-  valor_fuel: 0
+  puntaje: {fileID: 5723828130818717330, guid: e1bcd44a987ae944a8bf65f1f4314b52, type: 3}
 --- !u!1 &1904846321987861902
 GameObject:
   m_ObjectHideFlags: 0
