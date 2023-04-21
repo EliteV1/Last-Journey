@@ -3,44 +3,61 @@ using System.Collections.Generic;
 using UnityEngine;
 using MoreMountains.Tools;
 using MoreMountains.CorgiEngine;
-
+[AddComponentMenu("Corgi Engine/Items/Fuel")]
 public class Fuel : PickableItem
 {
+
+    /* private int gemaitas = 0;
+     public int congemitas = 0;*/
+   
     public GameObject fuelCounter;
-    private Animator anim;
+  
     [SerializeField]
     private int valor_fuel;
-    public int contador_fuel;
-    public bool completadof;
+
+
+
+  
+    [SerializeField] private FuelCounter fuel;
+
+
 
 
     private void Start()
     {
-        
-        anim = fuelCounter.GetComponent<Animator>();
-        
-        completadof = false;
+
+
+
+
+
+    }
+    private void Update()
+    {
 
     }
     protected override void Pick(GameObject picker)
     {
         //congemitas += 1;
 
-        
-        contador_fuel += valor_fuel;
-        Debug.Log(contador_fuel);
+       
+        FuelCounter.scoreValue += valor_fuel;
+        //contador_gemas = contador_gemas +1 ;
+        // anim.SetInteger("gemC", contador_gemas);
 
-        
-        anim.SetInteger("fuelC", contador_fuel);
+
+
+
+
+        //contador_gemas += valor_gema;
+
+
+
+
+
+
+
     }
 
-    public void Contar()
-    {
-        if (contador_fuel == 3)
-        {
 
-            completadof = true;
-            Debug.Log("completado");
-        }
-    }
 }
+

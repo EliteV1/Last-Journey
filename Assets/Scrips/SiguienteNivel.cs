@@ -12,8 +12,7 @@ public class SiguienteNivel : FinishLevel
 	
 	public virtual void GoToNextLevel()
 	{
-		if ((necesario.contador_gemas == 2) && (necesario.contador_fuel == 3))
-		{
+		
 			
 		
 		if (LevelManager.HasInstance)
@@ -24,10 +23,7 @@ public class SiguienteNivel : FinishLevel
 		{
 			MMSceneLoadingManager.LoadScene(LevelName);
 		}
-		}
-        else
-        {
-			Debug.Log("nop");
-        }
+		
+        
 	}
 }

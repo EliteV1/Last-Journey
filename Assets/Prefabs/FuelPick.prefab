@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9039971715878935009}
   - component: {fileID: 456898987331114611}
   - component: {fileID: 1171567810890541199}
-  - component: {fileID: 4708718900263830642}
+  - component: {fileID: 2147376521}
   m_Layer: 0
   m_Name: FuelPick
   m_TagString: Untagged
@@ -124,7 +124,7 @@ MonoBehaviour:
   IgnoreCheckpointsAlwaysRespawn: 1
   AssociatedCheckpoints: []
   RespawnFeedback: {fileID: 0}
---- !u!114 &4708718900263830642
+--- !u!114 &2147376521
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3781754270599510973}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1781c8a4152b3ea4e80400e2548fd932, type: 3}
+  m_Script: {fileID: 11500000, guid: 326acb8b0ef661e4d8b118a20425c2c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PickFeedbacks: {fileID: 0}
@@ -143,7 +143,6 @@ MonoBehaviour:
   DisableTargetObjectOnPick: 0
   TargetObjectToDisable: {fileID: 0}
   TargetObjectDisableDelay: 1
-  gemCounter: {fileID: 0}
   fuelCounter: {fileID: 0}
-  valor_gema: 0
   valor_fuel: 1
+  fuel: {fileID: 0}

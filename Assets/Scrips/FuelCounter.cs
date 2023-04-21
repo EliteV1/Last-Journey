@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GemCounter : MonoBehaviour
+public class FuelCounter : MonoBehaviour
 {
 
 
     public static int scoreValue = 0;
 
-     TextMeshProUGUI textMesh;
-    
+    TextMeshProUGUI textMesh;
+
 
     private void Start()
     {
-        
-       textMesh = GetComponent<TextMeshProUGUI>();
+
+        textMesh = GetComponent<TextMeshProUGUI>();
     }
 
     private void Update()
     {
-        textMesh.text = scoreValue + "/2:"  ;
+        textMesh.text = scoreValue + "/3:";
 
     }
 
-    
+
+
 }
